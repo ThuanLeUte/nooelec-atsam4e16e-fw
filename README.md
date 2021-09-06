@@ -1,4 +1,4 @@
-#Job Description
+# Job Description
 
 Seeking an experienced and motivated Firmware Developer with a focus on 32bit ARM Cortex-M4 microcontrollers and hardware interfacing.
 
@@ -16,9 +16,9 @@ Mandatory Skills & Requirements:
 - Team player who is proactive, self-motivated and with good communication skills
 - Creative, organized and able to work independently with minimal supervision
 
-#Todo
-1.	GPIO config and read
-2.	CAN Bus Communication Basic
-3.  SDCard Comunication (SDIO)
-4.	LCD driver
+## First milestone
 
+1. GPIO config and read
+2. CAN Bus Communication Basic
+3. SDCard Comunication (SDIO)
+4. LCD driver
