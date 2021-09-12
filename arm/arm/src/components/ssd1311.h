@@ -22,6 +22,8 @@ extern "C" {
 #include "ssd1311_defs.h"
 
 /* Public defines ----------------------------------------------------- */
+#define SSD1311_I2C_ADDRESS   (0x3C)  // 7 Bits - SA0 = 0
+
 /* Public enumerate/structure ----------------------------------------- */
 /**
  * @brief SSD1311 sensor struct
