@@ -2,6 +2,8 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
+src\sys\sys.c
+
 src\ASF\common\components\memory\sd_mmc\sd_mmc.c
 
 src\ASF\common\components\memory\sd_mmc\sd_mmc_mem.c

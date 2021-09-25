@@ -703,8 +703,15 @@
     <Folder Include="src\ASF\thirdparty\fatfs\fatfs-r0.09\src\" />
     <Folder Include="src\ASF\thirdparty\fatfs\fatfs-r0.09\src\option\" />
     <Folder Include="src\config\" />
+    <Folder Include="src\sys" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\sys\sys.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\sys\sys.h">
+      <SubType>compile</SubType>
+    </Compile>
     <None Include="src\ASF\common\utils\interrupt.h">
       <SubType>compile</SubType>
     </None>
