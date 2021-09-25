@@ -3,16 +3,16 @@
  * @copyright  Copyright (C) 2020 Hydratech. All rights reserved.
  * @license    This project is released under the Hydratech License.
  * @version    1.0.0
- * @date       2021-01-23
+ * @date       2021-09-23
  * @author     Thuan Le
- * @brief      Pin description for hardware version 1.1
+ * @brief      Pin description for hardware version 1.0
  * @note       None
  * @example    None
  */
 
 /* Define to prevent recursive inclusion ------------------------------ */
-#ifndef __BSP_IO_11_H
-#define __BSP_IO_11_H
+#ifndef __BSP_IO_10_H
+#define __BSP_IO_10_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -45,6 +45,6 @@ extern "C" {
 #ifdef __cplusplus
 } // extern "C"
 #endif
-#endif // __BSP_IO_11_H
+#endif // __BSP_IO_10_H
 
 /* End of file -------------------------------------------------------- */

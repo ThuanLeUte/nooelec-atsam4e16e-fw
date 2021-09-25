@@ -52,27 +52,18 @@
  * running the ASF driver selector tool. Any changes will be discarded.
  */
 
-// From module: CAN - Controller Area Network
-#include <can.h>
-
 // From module: Common SAM compiler driver
 #include <compiler.h>
 #include <status_codes.h>
 
-// From module: Common build items for user board support templates
-#include <user_board.h>
-
-// From module: GPIO - General purpose Input/Output
-#include <gpio.h>
-
 // From module: Generic board support
 #include <board.h>
 
+// From module: IOPORT - General purpose I/O service
+#include <ioport.h>
+
 // From module: Interrupt management - SAM implementation
 #include <interrupt.h>
-
-// From module: PIO - Parallel Input/Output Controller
-#include <pio.h>
 
 // From module: PMC - Power Management Controller
 #include <pmc.h>
@@ -84,22 +75,13 @@
 // From module: SAM FPU driver
 #include <fpu.h>
 
+// From module: SAM4E XPRO LED support enabled
+#include <led.h>
+
 // From module: SAM4E startup code
 #include <exceptions.h>
 
 // From module: System Clock Control - SAM4E implementation
 #include <sysclk.h>
-
-// From module: TWI - Two-Wire Interface - SAM implementation
-#include <sam_twi/twi_master.h>
-#include <sam_twi/twi_slave.h>
-#include <twi_master.h>
-#include <twi_slave.h>
-
-// From module: TWI - Two-wire Interface
-#include <twi.h>
-
-// From module: pio_handler support enabled
-#include <pio_handler.h>
 
 #endif // ASF_H

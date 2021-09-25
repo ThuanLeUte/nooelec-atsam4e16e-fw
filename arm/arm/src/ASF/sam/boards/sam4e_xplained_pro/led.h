@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief SAM4E Xplained Pro board configuration
+ * \brief SAM4E-XPRO LEDs support package.
  *
  * Copyright (c) 2014-2018 Microchip Technology Inc. and its subsidiaries.
  *
@@ -28,12 +28,44 @@
  * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
  *
  * \asf_license_stop
+ *
  */
 /*
  * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
  */
 
-#ifndef CONF_BOARD_H
-#define CONF_BOARD_H
+#ifndef LED_H_INCLUDED
+#define LED_H_INCLUDED
 
-#endif /* CONF_BOARD_H */
+#include "compiler.h"
+#include "ioport.h"
+
+/**
+ * \brief Turns off the specified LEDs.
+ *
+ * \param led LED to turn off (LEDx_GPIO).
+ *
+ * \note The pins of the specified LEDs are set to GPIO output mode.
+ */
+#define LED_Off(led)     ioport_set_pin_level(led##_GPIO, led##_INACTIVE_LEVEL)
+
+/**
+ * \brief Turns on the specified LEDs.
+ *
+ * \param led LED to turn on (LEDx_GPIO).
+ *
+ * \note The pins of the specified LEDs are set to GPIO output mode.
+ */
+#define LED_On(led)      ioport_set_pin_level(led##_GPIO, led##_ACTIVE_LEVEL)
+
+/**
+ * \brief Toggles the specified LEDs.
+ *
+ * \param led LED to toggle (LEDx_GPIO).
+ *
+ * \note The pins of the specified LEDs are set to GPIO output mode.
+ */
+#define LED_Toggle(led)  ioport_toggle_pin_level(led##_GPIO)
+
+
+#endif  // LED_H_INCLUDED
