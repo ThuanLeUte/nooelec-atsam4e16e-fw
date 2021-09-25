@@ -62,6 +62,12 @@
 // From module: Delay routines
 #include <delay.h>
 
+// From module: FatFS file system
+#include <diskio.h>
+#include <ff.h>
+#include <ffconf.h>
+#include <integer.h>
+
 // From module: GPIO - General purpose Input/Output
 #include <gpio.h>
 
@@ -74,6 +80,9 @@
 // From module: Interrupt management - SAM implementation
 #include <interrupt.h>
 
+// From module: Memory Control Access Interface
+#include <ctrl_access.h>
+
 // From module: PIO - Parallel Input/Output Controller
 #include <pio.h>
 
@@ -83,6 +92,9 @@
 
 // From module: Part identification macros
 #include <parts.h>
+
+// From module: RTC - Real Time Clock
+#include <rtc.h>
 
 // From module: SAM FPU driver
 #include <fpu.h>
@@ -102,6 +114,9 @@
 
 // From module: SPI - Serial Peripheral Interface
 #include <spi.h>
+
+// From module: Supported ports of FatFS
+#include <diskio.h>
 
 // From module: System Clock Control - SAM4E implementation
 #include <sysclk.h>
