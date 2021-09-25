@@ -74,6 +74,9 @@
 // From module: Generic board support
 #include <board.h>
 
+// From module: High Speed Multimedia Card Interface
+#include <hsmci.h>
+
 // From module: IOPORT - General purpose I/O service
 #include <ioport.h>
 
@@ -82,6 +85,9 @@
 
 // From module: Memory Control Access Interface
 #include <ctrl_access.h>
+
+// From module: PDC - Peripheral DMA Controller Example
+#include <pdc.h>
 
 // From module: PIO - Parallel Input/Output Controller
 #include <pio.h>
@@ -105,15 +111,11 @@
 // From module: SAM4E startup code
 #include <exceptions.h>
 
-// From module: SD/MMC stack on SPI interface
+// From module: SD/MMC Memory Control Access - Enable
+#include <sd_mmc_mem.h>
+
+// From module: SD/MMC stack on Multimedia Card interface
 #include <sd_mmc.h>
-
-// From module: SPI - SAM Implementation
-#include <spi_master.h>
-#include <spi_master.h>
-
-// From module: SPI - Serial Peripheral Interface
-#include <spi.h>
 
 // From module: Supported ports of FatFS
 #include <diskio.h>
