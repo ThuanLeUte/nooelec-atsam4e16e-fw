@@ -22,6 +22,7 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 #include "bsp_io_10.h"
+#include <asf.h>
 
 /* Public defines ----------------------------------------------------- */
 /* Public enumerate/structure ----------------------------------------- */
@@ -50,7 +51,7 @@ bool_t;
 #define CHECK(expr, ret)            \
   do {                              \
     if (!(expr)) {                  \
-      NRF_LOG_INFO("%s", #expr);    \
+      printf("%s", #expr);          \
       return (ret);                 \
     }                               \
   } while (0)
@@ -59,7 +60,7 @@ bool_t;
   do {                              \
     base_status_t ret = (expr);     \
     if (BS_OK != ret) {             \
-      NRF_LOG_INFO("%s", #expr);    \
+      printf("%s", #expr);          \
       return (ret);                 \
     }                               \
   } while (0)
