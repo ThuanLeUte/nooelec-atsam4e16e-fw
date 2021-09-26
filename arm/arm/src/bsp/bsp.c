@@ -35,12 +35,15 @@ void bsp_hw_init(void)
 
 int bsp_i2c_write(uint8_t slave_addr, uint8_t reg_addr, uint8_t *p_data, uint32_t len)
 {
-  return 0;
-}
+  twi_package_t packet_write;
 
-int bsp_i2c_read(uint8_t slave_addr, uint8_t reg_addr, uint8_t *p_data, uint32_t len)
-{
-  return 0;
+  packet_write.chip        = slave_addr;        // TWI slave bus address
+  packet_write.addr[0]     = reg_addr;          // TWI slave memory address data
+  packet_write.addr_length = sizeof(reg_addr);  // TWI slave memory address data size
+  packet_write.buffer      = (void *)p_data;    // Transfer data source buffer
+  packet_write.length      = len;               // Transfer data size (bytes)
+
+  return twi_master_write(TWI0, &packet_write);
 }
 
 /* Private function definitions ---------------------------------------- */
@@ -49,6 +52,11 @@ int bsp_i2c_read(uint8_t slave_addr, uint8_t reg_addr, uint8_t *p_data, uint32_t
  */
 static void m_bsp_i2c_init(void)
 {
+  twi_master_options_t opt = {
+      .speed = 400000
+  };
+
+  twi_master_setup(TWI0, &opt);
 }
 
 /**

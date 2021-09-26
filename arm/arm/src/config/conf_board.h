@@ -42,4 +42,7 @@
 // Enable CAN BUS
 #define CONF_BOARD_CAN
 
+// Enable I2C
+#define CONF_BOARD_TWI0
+
 #endif /* CONF_BOARD_H */
