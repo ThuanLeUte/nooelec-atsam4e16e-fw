@@ -4,6 +4,8 @@
 
 src\bsp\bsp.c
 
+src\bsp\bsp_can.c
+
 src\sys\sys.c
 
 src\ASF\common\components\memory\sd_mmc\sd_mmc.c

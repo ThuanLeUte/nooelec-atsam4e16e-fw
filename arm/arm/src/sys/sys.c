@@ -15,6 +15,8 @@
 #include <string.h>
 #include "sys.h"
 #include "bsp/bsp.h"
+#include "bsp/bsp_can.h"
+
 /* Private defines ---------------------------------------------------- */
 /* Private enumerate/structure ---------------------------------------- */
 /* Private macros ----------------------------------------------------- */
@@ -29,11 +31,12 @@ void sys_init(void)
   sysclk_init();  // Initialize System Clock
   board_init();   // Board init
   bsp_hw_init();  // Hardware init
+  bsp_can_init(); // Can bus init
 }
 
 void sys_run(void)
 {
-  m_sys_sdcard_test();
+  bsp_can_send();
 }
 
 /* Private function definitions --------------------------------------- */
