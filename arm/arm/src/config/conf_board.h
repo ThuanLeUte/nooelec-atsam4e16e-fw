@@ -36,4 +36,13 @@
 #ifndef CONF_BOARD_H
 #define CONF_BOARD_H
 
+// Enable SD MMC interface pins through HSMCI
+#define CONF_BOARD_SD_MMC_HSMCI
+
+// Enable CAN BUS
+#define CONF_BOARD_CAN
+
+// Enable I2C
+#define CONF_BOARD_TWI0
+
 #endif /* CONF_BOARD_H */

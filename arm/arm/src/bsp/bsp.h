@@ -22,6 +22,7 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 #include "bsp_io_10.h"
+#include <asf.h>
 
 /* Public defines ----------------------------------------------------- */
 /* Public enumerate/structure ----------------------------------------- */
@@ -50,7 +51,7 @@ bool_t;
 #define CHECK(expr, ret)            \
   do {                              \
     if (!(expr)) {                  \
-      NRF_LOG_INFO("%s", #expr);    \
+      printf("%s", #expr);          \
       return (ret);                 \
     }                               \
   } while (0)
@@ -59,7 +60,7 @@ bool_t;
   do {                              \
     base_status_t ret = (expr);     \
     if (BS_OK != ret) {             \
-      NRF_LOG_INFO("%s", #expr);    \
+      printf("%s", #expr);          \
       return (ret);                 \
     }                               \
   } while (0)
@@ -92,22 +93,6 @@ void bsp_hw_init(void);
  * - 1      Error
  */
 int bsp_i2c_write(uint8_t slave_addr, uint8_t reg_addr, uint8_t *p_data, uint32_t len);
-
-/**
- * @brief         I2C write
- *
- * @param[in]     slave_addr    Slave address
- * @param[in]     reg_addr      Register address
- * @param[in]     p_data        Pointer to handle of data
- * @param[in]     len           Data length
- *
- * @attention     None
- *
- * @return
- * - 0      Succes
- * - 1      Error
- */
-int bsp_i2c_read(uint8_t slave_addr, uint8_t reg_addr, uint8_t *p_data, uint32_t len);
 
 /* -------------------------------------------------------------------------- */
 #ifdef __cplusplus
