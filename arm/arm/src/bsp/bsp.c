@@ -58,7 +58,7 @@ void bsp_delay(uint32_t ms)
 static void m_bsp_i2c_init(void)
 {
   twi_master_options_t opt = {
-      .speed = 400000
+      .speed = 100000
   };
 
   twi_master_setup(TWI0, &opt);
