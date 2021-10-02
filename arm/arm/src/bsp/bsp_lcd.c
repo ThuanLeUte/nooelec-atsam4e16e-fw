@@ -33,6 +33,8 @@ void bsp_lcd_init(void)
   m_ssd1311.delay          = bsp_delay;
   
   ssd1311_init(&m_ssd1311);
+
+  ssd1311_send_string(&m_ssd1311, "Temp", 0, 0);
 }
 
 /* Public function for project ---------------------------------------- */

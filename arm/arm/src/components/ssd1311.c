@@ -24,6 +24,8 @@
 /* Private variables -------------------------------------------------- */
 /* Private function prototypes ---------------------------------------- */
 static base_status_t m_ssd1311_run_cfg_script(ssd1311_t *me);
+void cursPos(ssd1311_t *me, uint8_t col, uint8_t row);
+
 
 /* Function definitions ----------------------------------------------- */
 base_status_t ssd1311_init(ssd1311_t *me)
@@ -55,6 +57,25 @@ base_status_t ssd1311_write_data_byte(ssd1311_t *me, uint8_t data)
   CHECK(BS_OK == me->i2c_write(me->device_address, SSD1311_DATA_MODE, &data, 1), BS_ERROR);
 
   return BS_OK;
+}
+
+void cursPos(ssd1311_t *me, uint8_t col, uint8_t row)
+{
+  int row_offsets[] = {0x00, 0x40};
+
+  ssd1311_write_cmd(me, 0x80 | (col + row_offsets[row]));
+}
+
+void ssd1311_send_string(ssd1311_t *me, const char *string, uint8_t col, uint8_t row)
+{
+  unsigned char i = 0;
+  cursPos(me, col, row);
+
+  while(string[i])
+  {
+    ssd1311_write_data_byte(me, string[i]);
+    i++;
+  }
 }
 
 /* Private function definitions ---------------------------------------- */

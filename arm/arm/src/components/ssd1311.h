@@ -99,6 +99,9 @@ base_status_t ssd1311_write_data_byte(ssd1311_t *me, uint8_t data);
  */
 base_status_t ssd1311_write_data(ssd1311_t *me, uint8_t *data, uint16_t len);
 
+void ssd1311_send_string(ssd1311_t *me, const char *string, uint8_t col, uint8_t row);
+
+
 /* -------------------------------------------------------------------------- */
 #ifdef __cplusplus
 } // extern "C"
