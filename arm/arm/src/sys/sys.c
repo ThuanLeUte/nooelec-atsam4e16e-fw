@@ -39,11 +39,8 @@ void sys_init(void)
 
 void sys_run(void)
 {
-  uint8_t data = 0x99;
-
-  // bsp_i2c_write(0x77, 0x11, &data, 1);
   bsp_can_send();
-  // bsp_delay(1000);
+  bsp_lcd_init();
 }
 
 /* Private function definitions --------------------------------------- */

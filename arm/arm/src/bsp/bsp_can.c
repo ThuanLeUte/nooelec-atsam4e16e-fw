@@ -29,7 +29,7 @@ void bsp_can_init(void)
 
   pmc_enable_periph_clk(ID_CAN1);
 
-  can_init(CAN1, ul_sysclk, CAN_BPS_1000K);
+  can_init(CAN1, ul_sysclk, CAN_BPS_250K);
   can_reset_all_mailbox(CAN1);
 
   m_can1_mailbox.ul_mb_idx   = 0;
