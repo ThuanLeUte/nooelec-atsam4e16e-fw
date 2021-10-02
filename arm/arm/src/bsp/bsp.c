@@ -46,6 +46,11 @@ int bsp_i2c_write(uint8_t slave_addr, uint8_t reg_addr, uint8_t *p_data, uint32_
   return twi_master_write(TWI0, &packet_write);
 }
 
+void bsp_delay(uint32_t ms)
+{
+  delay_ms(ms);
+}
+
 /* Private function definitions ---------------------------------------- */
 /**
  * @brief I2C init
@@ -66,6 +71,7 @@ static void m_bsp_gpio_init(void)
 {
 
 }
+
 
 /**
  * @brief Gpio init

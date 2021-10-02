@@ -19,7 +19,7 @@ extern "C" {
 #endif
 
 /* Includes ----------------------------------------------------------- */
-#include "ssd1311.h"
+#include "components/ssd1311.h"
 
 /* Public defines ----------------------------------------------------- */
 /* Public enumerate/structure ----------------------------------------- */

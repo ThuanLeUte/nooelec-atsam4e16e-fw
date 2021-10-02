@@ -16,6 +16,7 @@
 #include "sys.h"
 #include "bsp/bsp.h"
 #include "bsp/bsp_can.h"
+#include "bsp/bsp_lcd.h"
 
 /* Private defines ---------------------------------------------------- */
 /* Private enumerate/structure ---------------------------------------- */
@@ -32,13 +33,17 @@ void sys_init(void)
   board_init();   // Board init
   bsp_hw_init();  // Hardware init
   bsp_can_init(); // Can bus init
+
+  bsp_lcd_init();
 }
 
 void sys_run(void)
 {
   uint8_t data = 0x99;
 
-  bsp_i2c_write(0x77, 0x11, &data, 1);
+  // bsp_i2c_write(0x77, 0x11, &data, 1);
+  bsp_can_send();
+  // bsp_delay(1000);
 }
 
 /* Private function definitions --------------------------------------- */

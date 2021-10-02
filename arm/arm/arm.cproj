@@ -560,7 +560,6 @@
       <Value>../src/ASF/sam/drivers/hsmci</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
-  <armgcc.compiler.optimization.level>Optimize (-O1)</armgcc.compiler.optimization.level>
   <armgcc.compiler.optimization.OtherFlags>-fdata-sections</armgcc.compiler.optimization.OtherFlags>
   <armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
   <armgcc.compiler.optimization.DebugLevel>Maximum (-g3)</armgcc.compiler.optimization.DebugLevel>
@@ -578,6 +577,7 @@
     </ListValues>
   </armgcc.linker.libraries.LibrarySearchPaths>
   <armgcc.linker.optimization.GarbageCollectUnusedSections>True</armgcc.linker.optimization.GarbageCollectUnusedSections>
+  <armgcc.linker.memorysettings.ExternalRAM />
   <armgcc.linker.miscellaneous.LinkerFlags>-Wl,--entry=Reset_Handler -Wl,--cref -mthumb -T../src/ASF/sam/utils/linker_scripts/sam4e/sam4e16/gcc/flash.ld</armgcc.linker.miscellaneous.LinkerFlags>
   <armgcc.assembler.general.IncludePaths>
     <ListValues>
@@ -726,6 +726,7 @@
     <Folder Include="src\ASF\thirdparty\fatfs\fatfs-r0.09\src\option\" />
     <Folder Include="src\config\" />
     <Folder Include="src\bsp" />
+    <Folder Include="src\components" />
     <Folder Include="src\sys" />
   </ItemGroup>
   <ItemGroup>
@@ -742,6 +743,21 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\bsp\bsp_io_10.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\bsp\bsp_lcd.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\bsp\bsp_lcd.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\components\ssd1311.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\components\ssd1311.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\components\ssd1311_defs.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\sys\sys.c">

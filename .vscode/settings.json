@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "ssd1311.h": "c"
+        "ssd1311.h": "c",
+        "bsp_lcd.h": "c"
     }
 }

@@ -6,6 +6,10 @@ src\bsp\bsp.c
 
 src\bsp\bsp_can.c
 
+src\bsp\bsp_lcd.c
+
+src\components\ssd1311.c
+
 src\sys\sys.c
 
 src\ASF\common\components\memory\sd_mmc\sd_mmc.c

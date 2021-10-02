@@ -12,7 +12,7 @@
 
 /* Includes ----------------------------------------------------------- */
 #include "ssd1311.h"
-#include "bsp_io_11.h"
+#include "bsp/bsp_io_10.h"
 
 /* Private defines ---------------------------------------------------- */
 #define SSD1311_CMD_MODE    (0x80)
@@ -28,7 +28,7 @@ static base_status_t m_ssd1311_run_cfg_script(ssd1311_t *me);
 /* Function definitions ----------------------------------------------- */
 base_status_t ssd1311_init(ssd1311_t *me)
 {
-  if ((me == NULL) || (me->spi_send == NULL))
+  if ((me == NULL) || (me->i2c_write == NULL))
     return BS_ERROR_PARAMS;
 
   m_ssd1311_run_cfg_script(me);
@@ -45,7 +45,7 @@ base_status_t ssd1311_write_cmd(ssd1311_t *me, uint8_t cmd)
 
 base_status_t ssd1311_write_data(ssd1311_t *me, uint8_t *data, uint16_t len)
 {
-  CHECK(BS_OK == me->i2c_write(me->device_address, SSD1311_DATA_MODE, &data, len), BS_ERROR);
+  CHECK(BS_OK == me->i2c_write(me->device_address, SSD1311_DATA_MODE, data, len), BS_ERROR);
 
   return BS_OK;
 }
@@ -87,10 +87,12 @@ static base_status_t m_ssd1311_run_cfg_script(ssd1311_t *me)
       ssd1311_write_data_byte(me, SSD1311_CFG_SCRIPT[i].data & 0xFF);
       break;
     case SSD1311_DELAY:
-      me->delay_ms(SSD1311_CFG_SCRIPT[i].data);
+      me->delay(SSD1311_CFG_SCRIPT[i].data);
       break;
     case SSD1311_END:
       end_script = 1;
+      break;
+    default:
       break;
     }
     i++;
