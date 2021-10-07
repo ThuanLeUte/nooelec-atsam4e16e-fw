@@ -14,6 +14,7 @@
 
 /* Includes ----------------------------------------------------------- */
 #include "bsp.h"
+#include "bsp_io.h"
 
 /* Private defines ---------------------------------------------------- */
 /* Private enumerate/structure ---------------------------------------- */
@@ -22,14 +23,13 @@
 /* Private variables -------------------------------------------------- */
 /* Private function prototypes ---------------------------------------- */
 static void m_bsp_i2c_init(void);
-static void m_bsp_gpio_init(void);
 static void m_bsp_sdcard_init(void);
 
 /* Function definitions ----------------------------------------------- */
 void bsp_hw_init(void)
 {
   m_bsp_i2c_init();
-  m_bsp_gpio_init();
+  bsp_gpio_init();
   m_bsp_sdcard_init();
 }
 
@@ -65,16 +65,7 @@ static void m_bsp_i2c_init(void)
 }
 
 /**
- * @brief Gpio init
- */
-static void m_bsp_gpio_init(void)
-{
-
-}
-
-
-/**
- * @brief Gpio init
+ * @brief Sdcard init
  */
 static void m_bsp_sdcard_init(void)
 {

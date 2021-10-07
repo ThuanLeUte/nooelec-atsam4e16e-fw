@@ -6,6 +6,10 @@ src\bsp\bsp.c
 
 src\bsp\bsp_can.c
 
+src\bsp\bsp_io.c
+
+src\bsp\bsp_io_10.c
+
 src\bsp\bsp_lcd.c
 
 src\components\ssd1311.c

@@ -742,6 +742,15 @@
     <Compile Include="src\bsp\bsp_can.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\bsp\bsp_io.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\bsp\bsp_io.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\bsp\bsp_io_10.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\bsp\bsp_io_10.h">
       <SubType>compile</SubType>
     </Compile>
