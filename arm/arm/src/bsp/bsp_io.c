@@ -24,7 +24,7 @@
 /* Private function prototypes ---------------------------------------- */
 void bsp_gpio_init(void)
 {
-  for (uint8_t i = 1; i <= 10; i++)
+  for (uint8_t i = 1; i <= 1; i++)
   {
     // Configure as input with pull-up and denouncing
     pio_set_input(PORT, PIN, PIO_INPUT | PIO_OPENDRAIN | PIO_DEBOUNCE);
@@ -49,7 +49,7 @@ void bsp_gpio_init(void)
 
 void bsp_io_interrupt_handler(uint32_t id, uint32_t index)
 {
-  for (uint8_t i = 1; i <= 10; i++)
+  for (uint8_t i = 1; i <= 1; i++)
   {
     if ((id == PORT_ID) && (index == PIN))
     {

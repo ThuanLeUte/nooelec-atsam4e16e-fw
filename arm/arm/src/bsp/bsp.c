@@ -30,9 +30,9 @@ static void m_bsp_sdcard_init(void);
 void bsp_hw_init(void)
 {
   m_bsp_i2c_init();
-  bsp_gpio_init();
   bsp_rtc_init();
   m_bsp_sdcard_init();
+  bsp_gpio_init();
 }
 
 int bsp_i2c_write(uint8_t slave_addr, uint8_t reg_addr, uint8_t *p_data, uint32_t len)
