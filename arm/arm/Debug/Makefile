@@ -114,6 +114,7 @@ C_SRCS +=  \
 ../src/bsp/bsp_io.c \
 ../src/bsp/bsp_io_10.c \
 ../src/bsp/bsp_lcd.c \
+../src/bsp/bsp_rtc.c \
 ../src/components/ssd1311.c \
 ../src/sys/sys.c \
 ../src/ASF/common/components/memory/sd_mmc/sd_mmc.c \
@@ -155,6 +156,7 @@ src/bsp/bsp_can.o \
 src/bsp/bsp_io.o \
 src/bsp/bsp_io_10.o \
 src/bsp/bsp_lcd.o \
+src/bsp/bsp_rtc.o \
 src/components/ssd1311.o \
 src/sys/sys.o \
 src/ASF/common/components/memory/sd_mmc/sd_mmc.o \
@@ -189,6 +191,7 @@ src/bsp/bsp_can.o \
 src/bsp/bsp_io.o \
 src/bsp/bsp_io_10.o \
 src/bsp/bsp_lcd.o \
+src/bsp/bsp_rtc.o \
 src/components/ssd1311.o \
 src/sys/sys.o \
 src/ASF/common/components/memory/sd_mmc/sd_mmc.o \
@@ -223,6 +226,7 @@ src/bsp/bsp_can.d \
 src/bsp/bsp_io.d \
 src/bsp/bsp_io_10.d \
 src/bsp/bsp_lcd.d \
+src/bsp/bsp_rtc.d \
 src/components/ssd1311.d \
 src/sys/sys.d \
 src/ASF/common/components/memory/sd_mmc/sd_mmc.d \
@@ -257,6 +261,7 @@ src/bsp/bsp_can.d \
 src/bsp/bsp_io.d \
 src/bsp/bsp_io_10.d \
 src/bsp/bsp_lcd.d \
+src/bsp/bsp_rtc.d \
 src/components/ssd1311.d \
 src/sys/sys.d \
 src/ASF/common/components/memory/sd_mmc/sd_mmc.d \
@@ -329,6 +334,13 @@ src/bsp/bsp_io_10.o: ../src/bsp/bsp_io_10.c
 	
 
 src/bsp/bsp_lcd.o: ../src/bsp/bsp_lcd.c
+	@echo Building file: $<
+	@echo Invoking: ARM/GNU C Compiler : 6.3.1
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain\bin\arm-none-eabi-gcc.exe$(QUOTE)  -x c -mthumb -D__SAM4E8E__ -DDEBUG -Dscanf=iscanf -DBOARD=SAM4E_XPLAINED_PRO -DARM_MATH_CM4=true -Dprintf=iprintf -D__SAM4E16E__ -DSD_MMC_ENABLE  -I"../src/ASF/sam/drivers/can" -I"../src/ASF/sam/drivers/pio" -I"../src/ASF/common/services/gpio" -I"../src/ASF/sam/drivers/pmc" -I"../src/ASF/common/services/clock" -I"../src/ASF/common/services/twi" -I"../src/ASF/sam/drivers/twi" -I"../src/ASF/common/boards" -I"../src/ASF/sam/utils" -I"../src/ASF/sam/utils/header_files" -I"../src/ASF/sam/utils/preprocessor" -I"../src/ASF/thirdparty/CMSIS/Include" -I"../src/ASF/thirdparty/CMSIS/Lib/GCC" -I"../src/ASF/sam/utils/fpu" -I"../src/ASF/common/utils" -I"../src/ASF/sam/utils/cmsis/sam4e/include" -I"../src/ASF/sam/utils/cmsis/sam4e/source/templates" -I"../src/ASF/common/services/ioport" -I"../src/ASF/sam/boards/sam4e_xplained_pro" -I"../src/ASF/sam/boards" -I"../src" -I"../src/config" -I"../src/ASF/common/components/memory/sd_mmc" -I"../src/ASF/common/services/delay" -I"../src/ASF/common/services/storage/ctrl_access" -I"../src/ASF/sam/drivers/rtc" -I"../src/ASF/thirdparty/fatfs/fatfs-r0.09/src" -I"../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam" -I"../src/ASF/sam/drivers/pdc" -I"../src/ASF/sam/drivers/pdc/pdc_uart_example" -I"../src/ASF/sam/drivers/hsmci"  -O0 -fdata-sections -ffunction-sections -mlong-calls -g3 -Wall -mcpu=cortex-m4 -c -pipe -fno-strict-aliasing -Wall -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -std=gnu99 -ffunction-sections -fdata-sections -Wchar-subscripts -Wcomment -Wformat=2 -Wimplicit-int -Wmain -Wparentheses -Wsequence-point -Wreturn-type -Wswitch -Wtrigraphs -Wunused -Wuninitialized -Wunknown-pragmas -Wfloat-equal -Wundef -Wshadow -Wbad-function-cast -Wwrite-strings -Wsign-compare -Waggregate-return -Wmissing-declarations -Wformat -Wmissing-format-attribute -Wno-deprecated-declarations -Wpacked -Wredundant-decls -Wnested-externs -Wlong-long -Wunreachable-code -Wcast-align --param max-inline-insns-single=500 -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+src/bsp/bsp_rtc.o: ../src/bsp/bsp_rtc.c
 	@echo Building file: $<
 	@echo Invoking: ARM/GNU C Compiler : 6.3.1
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\arm\arm-gnu-toolchain\bin\arm-none-eabi-gcc.exe$(QUOTE)  -x c -mthumb -D__SAM4E8E__ -DDEBUG -Dscanf=iscanf -DBOARD=SAM4E_XPLAINED_PRO -DARM_MATH_CM4=true -Dprintf=iprintf -D__SAM4E16E__ -DSD_MMC_ENABLE  -I"../src/ASF/sam/drivers/can" -I"../src/ASF/sam/drivers/pio" -I"../src/ASF/common/services/gpio" -I"../src/ASF/sam/drivers/pmc" -I"../src/ASF/common/services/clock" -I"../src/ASF/common/services/twi" -I"../src/ASF/sam/drivers/twi" -I"../src/ASF/common/boards" -I"../src/ASF/sam/utils" -I"../src/ASF/sam/utils/header_files" -I"../src/ASF/sam/utils/preprocessor" -I"../src/ASF/thirdparty/CMSIS/Include" -I"../src/ASF/thirdparty/CMSIS/Lib/GCC" -I"../src/ASF/sam/utils/fpu" -I"../src/ASF/common/utils" -I"../src/ASF/sam/utils/cmsis/sam4e/include" -I"../src/ASF/sam/utils/cmsis/sam4e/source/templates" -I"../src/ASF/common/services/ioport" -I"../src/ASF/sam/boards/sam4e_xplained_pro" -I"../src/ASF/sam/boards" -I"../src" -I"../src/config" -I"../src/ASF/common/components/memory/sd_mmc" -I"../src/ASF/common/services/delay" -I"../src/ASF/common/services/storage/ctrl_access" -I"../src/ASF/sam/drivers/rtc" -I"../src/ASF/thirdparty/fatfs/fatfs-r0.09/src" -I"../src/ASF/thirdparty/fatfs/fatfs-port-r0.09/sam" -I"../src/ASF/sam/drivers/pdc" -I"../src/ASF/sam/drivers/pdc/pdc_uart_example" -I"../src/ASF/sam/drivers/hsmci"  -O0 -fdata-sections -ffunction-sections -mlong-calls -g3 -Wall -mcpu=cortex-m4 -c -pipe -fno-strict-aliasing -Wall -Wstrict-prototypes -Wmissing-prototypes -Werror-implicit-function-declaration -Wpointer-arith -std=gnu99 -ffunction-sections -fdata-sections -Wchar-subscripts -Wcomment -Wformat=2 -Wimplicit-int -Wmain -Wparentheses -Wsequence-point -Wreturn-type -Wswitch -Wtrigraphs -Wunused -Wuninitialized -Wunknown-pragmas -Wfloat-equal -Wundef -Wshadow -Wbad-function-cast -Wwrite-strings -Wsign-compare -Waggregate-return -Wmissing-declarations -Wformat -Wmissing-format-attribute -Wno-deprecated-declarations -Wpacked -Wredundant-decls -Wnested-externs -Wlong-long -Wunreachable-code -Wcast-align --param max-inline-insns-single=500 -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

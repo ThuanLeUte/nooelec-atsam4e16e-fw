@@ -12,7 +12,9 @@
  */
 
 /* Includes ----------------------------------------------------------- */
-#include "bsp/bsp_io.h"
+#include "bsp_io.h"
+#include "bsp_lcd.h"
+#include "bsp_rtc.h"
 
 /* Private defines ---------------------------------------------------- */
 /* Private enumerate/structure ---------------------------------------- */
@@ -27,11 +29,14 @@ void bsp_gpio_init(void)
     // Configure as input with pull-up and denouncing
     pio_set_input(PORT, PIN, PIO_INPUT | PIO_OPENDRAIN | PIO_DEBOUNCE);
 
+    // Configure debounce filter at 25Hz
+    pio_set_debounce_filter(PORT, PIN, 25);
+
     // Configure External Interrupt on falling edge
     pio_handler_set(PORT, PORT_ID, PIN, PIO_IT_RISE_EDGE, bsp_io_interrupt_handler);
 
     // Enable external interrupt
-    pio_enable_pin_interrupt(PIN_INDEX);
+    pio_enable_interrupt(PORT, PIN);
   }
 
   // Configure Ext Interrupt in NVIC
@@ -44,7 +49,23 @@ void bsp_gpio_init(void)
 
 void bsp_io_interrupt_handler(uint32_t id, uint32_t index)
 {
+  for (uint8_t i = 1; i <= 10; i++)
+  {
+    if ((id == PORT_ID) && (index == PIN))
+    {
+      if (pio_get(PORT, PIO_TYPE_PIO_INPUT, PIN))
+      {
+        static uint8_t m_current_row = 0;
+        char time[14];
 
+        bsp_rtc_make_string_time_style(time);
+
+        bsp_lcd_write_string(0, m_current_row++, "%s: SS%d", time, i);
+        if (m_current_row == 4)
+          m_current_row = 0;
+      }
+    }
+  }
 }
 
 /* Function definitions ----------------------------------------------- */

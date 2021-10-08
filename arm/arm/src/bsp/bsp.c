@@ -15,6 +15,7 @@
 /* Includes ----------------------------------------------------------- */
 #include "bsp.h"
 #include "bsp_io.h"
+#include "bsp_rtc.h"
 
 /* Private defines ---------------------------------------------------- */
 /* Private enumerate/structure ---------------------------------------- */
@@ -30,6 +31,7 @@ void bsp_hw_init(void)
 {
   m_bsp_i2c_init();
   bsp_gpio_init();
+  bsp_rtc_init();
   m_bsp_sdcard_init();
 }
 

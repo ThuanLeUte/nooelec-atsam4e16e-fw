@@ -21,8 +21,9 @@ extern "C" {
 /* Includes ----------------------------------------------------------- */
 #include <stdint.h>
 #include <stdbool.h>
-#include "bsp_io_10.h"
+#include <time.h>
 #include <asf.h>
+#include "bsp_io_10.h"
 
 /* Public defines ----------------------------------------------------- */
 /* Public enumerate/structure ----------------------------------------- */
@@ -46,6 +47,8 @@ typedef enum
   BS_TRUE  = 0x01
 }
 bool_t;
+
+typedef struct tm date_time_t;
 
 /* Public macros ------------------------------------------------------ */
 #define CHECK(expr, ret)            \

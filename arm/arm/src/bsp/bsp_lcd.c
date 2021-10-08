@@ -39,7 +39,7 @@ void bsp_lcd_init(void)
   ssd1311_init(&m_ssd1311);
 }
 
-void bsp_lcd_write_string(uint8_t x, uint8_t y, char *fmt_string, ...)
+void bsp_lcd_write_string(uint8_t x, uint8_t y, const char *fmt_string, ...)
 {
   char str[256] = "";
   unsigned char i = 0;

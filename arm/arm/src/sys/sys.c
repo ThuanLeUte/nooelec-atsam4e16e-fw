@@ -18,14 +18,13 @@
 #include "bsp/bsp_can.h"
 #include "bsp/bsp_lcd.h"
 #include "bsp/bsp_io.h"
+#include "bsp/bsp_rtc.h"
 
 /* Private defines ---------------------------------------------------- */
 /* Private enumerate/structure ---------------------------------------- */
 /* Private macros ----------------------------------------------------- */
 /* Public variables --------------------------------------------------- */
 /* Private variables -------------------------------------------------- */
-static m_current_row = 0;
-
 /* Private function prototypes ---------------------------------------- */
 static void m_sys_sdcard_test(void);
 
@@ -43,15 +42,20 @@ void sys_run(void)
 {
   bsp_can_send();
   
-  for (uint8_t i = 1; i < 10; i++)
-  {
-    if (pio_get(PORT, PIO_TYPE_PIO_INPUT, PIN))
-    {
-      bsp_lcd_write_string(0, m_current_row++, "Sensor %d on", i);
-      if (m_current_row == 4)
-        m_current_row = 0;
-    }
-  }
+  // for (uint8_t i = 1; i <= 1; i++)
+  // {
+  //   if (pio_get(PORT, PIO_TYPE_PIO_INPUT, PIN))
+  //   {
+  //     static uint8_t m_current_row = 0;
+  //     char time[14];
+
+  //     bsp_rtc_make_string_time_style(time);
+
+  //     bsp_lcd_write_string(0, m_current_row++, "%s: SS%d", time, i);
+  //     if (m_current_row == 4)
+  //       m_current_row = 0;
+  //   }
+  // }
 }
 
 /* Private function definitions --------------------------------------- */

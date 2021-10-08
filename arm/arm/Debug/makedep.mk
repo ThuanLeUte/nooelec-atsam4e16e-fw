@@ -12,6 +12,8 @@ src\bsp\bsp_io_10.c
 
 src\bsp\bsp_lcd.c
 
+src\bsp\bsp_rtc.c
+
 src\components\ssd1311.c
 
 src\sys\sys.c
