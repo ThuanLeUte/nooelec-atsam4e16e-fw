@@ -17,6 +17,7 @@
 #include "bsp/bsp.h"
 #include "bsp/bsp_can.h"
 #include "bsp/bsp_lcd.h"
+#include "bsp/bsp_io.h"
 
 /* Private defines ---------------------------------------------------- */
 /* Private enumerate/structure ---------------------------------------- */
@@ -33,14 +34,19 @@ void sys_init(void)
   board_init();   // Board init
   bsp_hw_init();  // Hardware init
   bsp_can_init(); // Can bus init
-
-  bsp_lcd_init();
 }
 
 void sys_run(void)
 {
   bsp_can_send();
-  bsp_delay(1000);
+  
+  for (uint8_t i = 1; i < 10; i++)
+  {
+    if (pio_get(PORT, PIO_TYPE_PIO_INPUT, PIN))
+    {
+      bsp_lcd_init();
+    }
+  }
 }
 
 /* Private function definitions --------------------------------------- */

@@ -23,6 +23,13 @@ extern "C" {
 #include "bsp/bsp_io_10.h"
 
 /* Public defines ----------------------------------------------------- */
+#define SENSOR_COUNT_MAX  (99)
+
+#define PORT            BSP_IO_GET_PORT(&IO_SENSOR[i])
+#define PORT_ID         BSP_IO_GET_PORT_ID(&IO_SENSOR[i])
+#define PIN             BSP_IO_GET_PIN(&IO_SENSOR[i])
+#define PIN_INDEX       BSP_IO_GET_PIN_INDEX(&IO_SENSOR[i])
+
 /* Public enumerate/structure ----------------------------------------- */
 /* Public macros ------------------------------------------------------ */
 #define BSP_IO_GET_PORT(x)              bsp_io_get_port_address(x)
