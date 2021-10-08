@@ -36,17 +36,8 @@ extern "C" {
  * @return        None
  */
 void bsp_lcd_init(void);
+void bsp_lcd_write_string(uint8_t x, uint8_t y, char *fmt_string, ...);
 
-/* Public function for project ---------------------------------------- */
-/**
- * @brief         LDC display image
- *
- * @param[in]     item    Image item
- *
- * @attention     None
- *
- * @return        None
- */
 /* -------------------------------------------------------------------- */
 #ifdef __cplusplus
 } // extern "C"

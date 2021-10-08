@@ -24,6 +24,8 @@
 /* Private macros ----------------------------------------------------- */
 /* Public variables --------------------------------------------------- */
 /* Private variables -------------------------------------------------- */
+static m_current_row = 0;
+
 /* Private function prototypes ---------------------------------------- */
 static void m_sys_sdcard_test(void);
 
@@ -34,6 +36,7 @@ void sys_init(void)
   board_init();   // Board init
   bsp_hw_init();  // Hardware init
   bsp_can_init(); // Can bus init
+  bsp_lcd_init();
 }
 
 void sys_run(void)
@@ -44,7 +47,9 @@ void sys_run(void)
   {
     if (pio_get(PORT, PIO_TYPE_PIO_INPUT, PIN))
     {
-      bsp_lcd_init();
+      bsp_lcd_write_string(0, m_current_row++, "Sensor %d on", i);
+      if (m_current_row == 4)
+        m_current_row = 0;
     }
   }
 }
