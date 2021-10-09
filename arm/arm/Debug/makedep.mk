@@ -2,6 +2,20 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
+src\ASF\thirdparty\freertos\freertos-7.3.0\source\FreeRTOS_CLI.c
+
+src\ASF\thirdparty\freertos\freertos-7.3.0\source\list.c
+
+src\ASF\thirdparty\freertos\freertos-7.3.0\source\portable\gcc\sam_cm4f\port.c
+
+src\ASF\thirdparty\freertos\freertos-7.3.0\source\portable\memmang\heap_4.c
+
+src\ASF\thirdparty\freertos\freertos-7.3.0\source\queue.c
+
+src\ASF\thirdparty\freertos\freertos-7.3.0\source\tasks.c
+
+src\ASF\thirdparty\freertos\freertos-7.3.0\source\timers.c
+
 src\bsp\bsp.c
 
 src\bsp\bsp_can.c

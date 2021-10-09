@@ -27,15 +27,38 @@
 /* Private variables -------------------------------------------------- */
 /* Private function prototypes ---------------------------------------- */
 static void m_sys_sdcard_test(void);
+void vTaskCode(void *pvParameters);
 
 /* Function definitions ----------------------------------------------- */
+
+void vTaskCode(void *pvParameters)
+{
+  for (;;)
+  {
+    // Task code goes here.
+  }
+}
+
 void sys_init(void)
 {
+
   sysclk_init();  // Initialize System Clock
   board_init();   // Board init
   bsp_hw_init();  // Hardware init
   bsp_can_init(); // Can bus init
   bsp_lcd_init();
+
+  xTaskCreate(vTaskCode,
+              "ExampleTask",
+              1024,
+              NULL,
+              2,
+              NULL);
+
+  vTaskStartScheduler();
+
+  // Will only get here if there was insufficient memory to create the idle
+	// and/or timer task.
 }
 
 void sys_run(void)
