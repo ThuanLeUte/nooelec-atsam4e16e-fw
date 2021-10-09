@@ -13,34 +13,37 @@
 /* Includes ----------------------------------------------------------- */
 #include <stdio.h>
 #include <string.h>
-#include "sys.h"
 #include "bsp/bsp.h"
 #include "bsp/bsp_can.h"
 #include "bsp/bsp_lcd.h"
 #include "bsp/bsp_io.h"
 #include "bsp/bsp_rtc.h"
+#include "sys.h"
+#include "sys_damos_ram.h"
 
 /* Private defines ---------------------------------------------------- */
+#define SENSOR_TASK_STACK_SIZE       (2048)
+#define SENSOR_TASK_PRIORITY         (3)
+
+#define MAIN_TASK_STACK_SIZE         (2048)
+#define MAIN_TASK_PRIORITY           (3)
+
 /* Private enumerate/structure ---------------------------------------- */
 /* Private macros ----------------------------------------------------- */
 /* Public variables --------------------------------------------------- */
 /* Private variables -------------------------------------------------- */
+static xTaskHandle m_sensor_task_hdl;
+static xTaskHandle m_main_task_hdl;
+
 /* Private function prototypes ---------------------------------------- */
 static void m_sys_sdcard_test(void);
-void vTaskCode(void *pvParameters);
+static void m_sensor_hande_task(void *params);
+static void m_lcd_write_sensor_event(uint8_t sensor_name);
 
 /* Function definitions ----------------------------------------------- */
-
-void vTaskCode(void *pvParameters)
-{
-  for (;;)
-  {
-    // Task code goes here.
-  }
-}
-
 void sys_init(void)
 {
+  g_sensor_evt_queue = xQueueCreate(10, sizeof(uint8_t));
 
   sysclk_init();  // Initialize System Clock
   board_init();   // Board init
@@ -48,40 +51,85 @@ void sys_init(void)
   bsp_can_init(); // Can bus init
   bsp_lcd_init();
 
-  xTaskCreate(vTaskCode,
-              "ExampleTask",
-              1024,
+  // Create task to handle sensor events
+  xTaskCreate(m_sensor_hande_task,
+              "SensorHandleTask",
+              SENSOR_TASK_STACK_SIZE,
               NULL,
-              2,
-              NULL);
+              SENSOR_TASK_PRIORITY,
+              m_sensor_task_hdl);
+
+  // Create task to handle main system
+  xTaskCreate(sys_run,
+              "SystemRun",
+              MAIN_TASK_STACK_SIZE,
+              NULL,
+              MAIN_TASK_PRIORITY,
+              m_main_task_hdl);
 
   vTaskStartScheduler();
-
-  // Will only get here if there was insufficient memory to create the idle
-	// and/or timer task.
 }
 
 void sys_run(void)
 {
-  bsp_can_send();
-  
-  // for (uint8_t i = 1; i <= 1; i++)
-  // {
-  //   if (pio_get(PORT, PIO_TYPE_PIO_INPUT, PIN))
-  //   {
-  //     static uint8_t m_current_row = 0;
-  //     char time[14];
+  while (1)
+  {
+    bsp_can_send();
 
-  //     bsp_rtc_make_string_time_style(time);
-
-  //     bsp_lcd_write_string(0, m_current_row++, "%s: SS%d", time, i);
-  //     if (m_current_row == 4)
-  //       m_current_row = 0;
-  //   }
-  // }
+    vTaskDelay(pdMS_TO_TICKS(100));
+  }
 }
 
 /* Private function definitions --------------------------------------- */
+/**
+ * @brief Sensor handle task
+ */
+static void m_sensor_hande_task(void *params)
+{
+  while (1)
+  {
+    for (uint8_t i = 1; i <= 99; i++)
+    {
+      if (!ioport_get_pin_level(PIN_INDEX(i)) && !IO_SENSOR_STATE[i])
+      {
+        m_lcd_write_sensor_event(i);
+        IO_SENSOR_STATE[i] = true;
+      }
+      else if (ioport_get_pin_level(PIN_INDEX(i)) && IO_SENSOR_STATE[i])
+      {
+        IO_SENSOR_STATE[i] = false;
+      }
+
+      // if (pio_get(PORT(i), PIO_TYPE_PIO_INPUT, PIN(i)) && !IO_SENSOR_STATE[i])
+      // {
+      //   m_lcd_write_sensor_event(i);
+      //   IO_SENSOR_STATE[i] = true;
+      // }
+      // else if (!pio_get(PORT(i), PIO_TYPE_PIO_INPUT, PIN(i)) && IO_SENSOR_STATE[i])
+      // {
+      //   IO_SENSOR_STATE[i] = false;
+      // }
+    }
+
+    vTaskDelay(pdMS_TO_TICKS(100));
+  }
+}
+
+/**
+ * @brief LCD write sensor event
+ */
+static void m_lcd_write_sensor_event(uint8_t sensor_name)
+{
+  static uint8_t m_current_row = 0;
+  char time[14];
+
+  bsp_rtc_make_string_time_style(time);
+
+  bsp_lcd_write_string(0, m_current_row++, "%s: SS%02d", time, sensor_name);
+  if (m_current_row == 4)
+    m_current_row = 0;
+}
+
 /**
  * @brief SDcard test
  */

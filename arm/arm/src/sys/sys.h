@@ -19,7 +19,11 @@ extern "C" {
 #endif
 
 /* Includes ----------------------------------------------------------- */
+#include <asf.h>
+
 /* Public defines ----------------------------------------------------- */
+#define pdMS_TO_TICKS(xTimeInMs) (xTimeInMs / portTICK_RATE_MS)
+
 /* Public enumerate/structure ----------------------------------------- */
 /* Public macros ------------------------------------------------------ */
 /* Public variables --------------------------------------------------- */

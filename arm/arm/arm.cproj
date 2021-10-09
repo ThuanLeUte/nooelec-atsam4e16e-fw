@@ -780,6 +780,18 @@
     <Compile Include="src\ASF\thirdparty\freertos\freertos-7.3.0\source\FreeRTOS_CLI.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\bsp\it_callback.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\bsp\it_callback.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\sys\sys_damos_ram.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\sys\sys_damos_ram.h">
+      <SubType>compile</SubType>
+    </Compile>
     <None Include="src\ASF\thirdparty\freertos\freertos-7.3.0\source\include\mpu_wrappers.h">
       <SubType>compile</SubType>
     </None>

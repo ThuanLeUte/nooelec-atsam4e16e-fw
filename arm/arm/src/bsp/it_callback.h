@@ -1,57 +1,43 @@
 /**
- * @file       bsp_lcd.h
+ * @file       it_callback.h
  * @copyright  Copyright (C) 2020 Hydratech. All rights reserved.
  * @license    This project is released under the Hydratech License.
  * @version    1.0.0
  * @date       2021-01-23
  * @author     Thuan Le
- * @brief      Board Support LCD
+ * @brief      Interrupt callback
  * @note       None
  * @example    None
  */
 
 /* Define to prevent recursive inclusion ------------------------------ */
-#ifndef __BSP_LCD_H
-#define __BSP_LCD_H
+#ifndef __IT_CALLBACK_H
+#define __IT_CALLBACK_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* Includes ----------------------------------------------------------- */
-#include "components/ssd1311.h"
+#include <asf.h>
+#include "bsp_io_10.h"
 
 /* Public defines ----------------------------------------------------- */
 /* Public enumerate/structure ----------------------------------------- */
 /* Public macros ------------------------------------------------------ */
 /* Public variables --------------------------------------------------- */
 /* Public function prototypes ----------------------------------------- */
+/* Public variables --------------------------------------------------- */
+/* Public function prototypes ----------------------------------------- */
 /**
- * @brief         LCD init
- *
- * @param[in]     None
- *
- * @attention     None
- *
- * @return        None
+ * @brief External IO interrupt handler
  */
-void bsp_lcd_init(void);
+void exint_io_handler(uint32_t id, uint32_t index);
 
-/**
- * @brief         LCD write string
- *
- * @param[in]     None
- *
- * @attention     None
- *
- * @return        None
- */
-void bsp_lcd_write_string(uint8_t x, uint8_t y, const char *fmt_string, ...);
-
-/* -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 #ifdef __cplusplus
 } // extern "C"
 #endif
-#endif // __BSP_LCD_H
+#endif // __IT_CALLBACK_H
 
 /* End of file -------------------------------------------------------- */

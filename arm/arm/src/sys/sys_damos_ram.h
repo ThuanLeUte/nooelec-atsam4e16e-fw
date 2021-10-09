@@ -1,57 +1,38 @@
 /**
- * @file       bsp_lcd.h
+ * @file       sys_damos_ram.h
  * @copyright  Copyright (C) 2020 Hydratech. All rights reserved.
  * @license    This project is released under the Hydratech License.
  * @version    1.0.0
- * @date       2021-01-23
+ * @date       2021-09-25
  * @author     Thuan Le
- * @brief      Board Support LCD
+ * @brief      RAM variables
  * @note       None
  * @example    None
  */
 
 /* Define to prevent recursive inclusion ------------------------------ */
-#ifndef __BSP_LCD_H
-#define __BSP_LCD_H
+#ifndef __SYS_DAMOS_RAM_H
+#define __SYS_DAMOS_RAM_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /* Includes ----------------------------------------------------------- */
-#include "components/ssd1311.h"
+#include <asf.h>
 
 /* Public defines ----------------------------------------------------- */
 /* Public enumerate/structure ----------------------------------------- */
 /* Public macros ------------------------------------------------------ */
 /* Public variables --------------------------------------------------- */
-/* Public function prototypes ----------------------------------------- */
-/**
- * @brief         LCD init
- *
- * @param[in]     None
- *
- * @attention     None
- *
- * @return        None
- */
-void bsp_lcd_init(void);
+extern xQueueHandle g_sensor_evt_queue;
 
-/**
- * @brief         LCD write string
- *
- * @param[in]     None
- *
- * @attention     None
- *
- * @return        None
- */
-void bsp_lcd_write_string(uint8_t x, uint8_t y, const char *fmt_string, ...);
+/* Public function prototypes ----------------------------------------- */
 
 /* -------------------------------------------------------------------- */
 #ifdef __cplusplus
 } // extern "C"
 #endif
-#endif // __BSP_LCD_H
+#endif // __SYS_DAMOS_RAM_H
 
 /* End of file -------------------------------------------------------- */

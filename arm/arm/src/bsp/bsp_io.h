@@ -25,10 +25,10 @@ extern "C" {
 /* Public defines ----------------------------------------------------- */
 #define SENSOR_COUNT_MAX  (99)
 
-#define PORT            BSP_IO_GET_PORT(&IO_SENSOR[i])
-#define PORT_ID         BSP_IO_GET_PORT_ID(&IO_SENSOR[i])
-#define PIN             BSP_IO_GET_PIN(&IO_SENSOR[i])
-#define PIN_INDEX       BSP_IO_GET_PIN_INDEX(&IO_SENSOR[i])
+#define PORT(i)            BSP_IO_GET_PORT(&IO_SENSOR[i])
+#define PORT_ID(i)         BSP_IO_GET_PORT_ID(&IO_SENSOR[i])
+#define PIN(i)             BSP_IO_GET_PIN(&IO_SENSOR[i])
+#define PIN_INDEX(i)       BSP_IO_GET_PIN_INDEX(&IO_SENSOR[i])
 
 /* Public enumerate/structure ----------------------------------------- */
 /* Public macros ------------------------------------------------------ */
@@ -43,11 +43,10 @@ extern "C" {
 /* Public function prototypes ----------------------------------------- */
 Pio *bsp_io_get_port_address(const bsp_io_10_t *io);
 uint32_t bsp_io_get_port_id(const bsp_io_10_t *io);
-uint16_t bsp_io_get_pin(const bsp_io_10_t *io);
-uint16_t bsp_io_get_pin_index(const bsp_io_10_t *io);
+uint32_t bsp_io_get_pin(const bsp_io_10_t *io);
+uint32_t bsp_io_get_pin_index(const bsp_io_10_t *io);
 
 void bsp_gpio_init(void);
-void bsp_io_interrupt_handler(uint32_t id, uint32_t index);
 
 /* -------------------------------------------------------------------------- */
 #ifdef __cplusplus

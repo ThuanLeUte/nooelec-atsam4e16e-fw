@@ -15,60 +15,51 @@
 #include "bsp_io.h"
 #include "bsp_lcd.h"
 #include "bsp_rtc.h"
+#include "it_callback.h"
 
 /* Private defines ---------------------------------------------------- */
+#define ioport_set_pin_input_mode(pin, mode, sense) \
+  do                                                \
+  {                                                 \
+    ioport_set_pin_dir(pin, IOPORT_DIR_INPUT);      \
+    ioport_set_pin_mode(pin, mode);                 \
+    ioport_set_pin_sense_mode(pin, sense);          \
+  } while (0)
+
 /* Private enumerate/structure ---------------------------------------- */
 /* Private macros ----------------------------------------------------- */
 /* Public variables --------------------------------------------------- */
 /* Private variables -------------------------------------------------- */
 /* Private function prototypes ---------------------------------------- */
+/* Function definitions ----------------------------------------------- */
 void bsp_gpio_init(void)
 {
-  for (uint8_t i = 1; i <= 1; i++)
+  for (uint8_t i = 1; i <= 99; i++)
   {
-    // Configure as input with pull-up and denouncing
-    pio_set_input(PORT, PIN, PIO_INPUT | PIO_OPENDRAIN | PIO_DEBOUNCE);
+    ioport_set_pin_input_mode(PIN_INDEX(i), IOPORT_MODE_PULLUP, IOPORT_SENSE_BOTHEDGES);
 
-    // Configure debounce filter at 25Hz
-    pio_set_debounce_filter(PORT, PIN, 25);
+    // Configure as input with pull-down and denouncing
+    // pio_set_input(PORT(i), PIN(i), PIO_DEFAULT);
+    pio_pull_down(PORT(i), PIN(i), ENABLE);
 
-    // Configure External Interrupt on falling edge
-    pio_handler_set(PORT, PORT_ID, PIN, PIO_IT_RISE_EDGE, bsp_io_interrupt_handler);
+    // // Configure debounce filter at 25Hz
+    // pio_set_debounce_filter(PORT(i), PIN(i), 1000);
 
-    // Enable external interrupt
-    pio_enable_interrupt(PORT, PIN);
+    // // Configure External Interrupt on falling edge
+    // pio_handler_set(PORT(i), PORT_ID(i), PIN(i), PIO_IT_RISE_EDGE, exint_io_handler);
+
+    // // Enable external interrupt
+    // pio_enable_interrupt(PORT(i), PIN(i));
   }
 
   // Configure Ext Interrupt in NVIC
-  irq_register_handler(PIOA_IRQn, 0);
-  irq_register_handler(PIOB_IRQn, 0);
-  irq_register_handler(PIOC_IRQn, 0);
-  irq_register_handler(PIOD_IRQn, 0);
-  irq_register_handler(PIOE_IRQn, 0);
+  // irq_register_handler(PIOA_IRQn, 0);
+  // irq_register_handler(PIOB_IRQn, 0);
+  // irq_register_handler(PIOC_IRQn, 0);
+  // irq_register_handler(PIOD_IRQn, 0);
+  // irq_register_handler(PIOE_IRQn, 0);
 }
 
-void bsp_io_interrupt_handler(uint32_t id, uint32_t index)
-{
-  for (uint8_t i = 1; i <= 1; i++)
-  {
-    if ((id == PORT_ID) && (index == PIN))
-    {
-      if (pio_get(PORT, PIO_TYPE_PIO_INPUT, PIN))
-      {
-        static uint8_t m_current_row = 0;
-        char time[14];
-
-        bsp_rtc_make_string_time_style(time);
-
-        bsp_lcd_write_string(0, m_current_row++, "%s: SS%d", time, i);
-        if (m_current_row == 4)
-          m_current_row = 0;
-      }
-    }
-  }
-}
-
-/* Function definitions ----------------------------------------------- */
 Pio *bsp_io_get_port_address(const bsp_io_10_t *io)
 {
   return io->port;
@@ -79,14 +70,15 @@ uint32_t bsp_io_get_port_id(const bsp_io_10_t *io)
   return io->port_id;
 }
 
-uint16_t bsp_io_get_pin(const bsp_io_10_t *io)
+uint32_t bsp_io_get_pin(const bsp_io_10_t *io)
 {
   return io->pin;
 }
 
-uint16_t bsp_io_get_pin_index(const bsp_io_10_t *io)
+uint32_t bsp_io_get_pin_index(const bsp_io_10_t *io)
 {
   return io->pin_index;
 }
+
 /* Private function definitions ---------------------------------------- */
 /* End of file -------------------------------------------------------- */

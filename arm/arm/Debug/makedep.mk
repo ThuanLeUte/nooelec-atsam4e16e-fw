@@ -4,6 +4,10 @@
 
 src\ASF\thirdparty\freertos\freertos-7.3.0\source\FreeRTOS_CLI.c
 
+src\bsp\it_callback.c
+
+src\sys\sys_damos_ram.c
+
 src\ASF\thirdparty\freertos\freertos-7.3.0\source\list.c
 
 src\ASF\thirdparty\freertos\freertos-7.3.0\source\portable\gcc\sam_cm4f\port.c
