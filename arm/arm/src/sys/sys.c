@@ -28,6 +28,8 @@
 #define MAIN_TASK_STACK_SIZE         (2048)
 #define MAIN_TASK_PRIORITY           (3)
 
+#define SD_PATH   "0:sensor_events.log"
+
 /* Private enumerate/structure ---------------------------------------- */
 /* Private macros ----------------------------------------------------- */
 /* Public variables --------------------------------------------------- */
@@ -39,17 +41,21 @@ static xTaskHandle m_main_task_hdl;
 static void m_sys_sdcard_test(void);
 static void m_sensor_hande_task(void *params);
 static void m_lcd_write_sensor_event(uint8_t sensor_name);
+static bool_t m_sys_fs_init(void);
+static bool_t m_sys_fs_write(const char *path, char *data);
+static void m_sdcard_write_sensor_event(uint8_t sensor_name);
 
 /* Function definitions ----------------------------------------------- */
 void sys_init(void)
 {
   g_sensor_evt_queue = xQueueCreate(10, sizeof(uint8_t));
 
-  sysclk_init();  // Initialize System Clock
-  board_init();   // Board init
-  bsp_hw_init();  // Hardware init
-  bsp_can_init(); // Can bus init
-  bsp_lcd_init();
+  sysclk_init();   // Initialize System Clock
+  board_init();    // Board init
+  bsp_hw_init();   // Hardware init
+  bsp_can_init();  // Can bus init
+  bsp_lcd_init();  // LCD init
+  m_sys_fs_init(); // FS init
 
   // Create task to handle sensor events
   xTaskCreate(m_sensor_hande_task,
@@ -93,6 +99,7 @@ static void m_sensor_hande_task(void *params)
       if (!ioport_get_pin_level(PIN_INDEX(i)) && !IO_SENSOR_STATE[i])
       {
         m_lcd_write_sensor_event(i);
+        m_sdcard_write_sensor_event(i);
         IO_SENSOR_STATE[i] = true;
       }
       else if (ioport_get_pin_level(PIN_INDEX(i)) && IO_SENSOR_STATE[i])
@@ -131,6 +138,21 @@ static void m_lcd_write_sensor_event(uint8_t sensor_name)
 }
 
 /**
+ * @brief SDcard write sensor event
+ */
+static void m_sdcard_write_sensor_event(uint8_t sensor_name)
+{
+  char str[200];
+  char time[14];
+
+  bsp_rtc_make_string_time_style(time);
+
+  sprintf(str, "%s: SS%2d\n", time, sensor_name);
+
+  m_sys_fs_write(SD_PATH, str);
+}
+
+/**
  * @brief SDcard test
  */
 static void m_sys_sdcard_test(void)
@@ -164,6 +186,49 @@ static void m_sys_sdcard_test(void)
   // Nothing else to do
   while (1)
     ;
+}
+
+/**
+ * @brief FS init
+ */
+static bool_t m_sys_fs_init(void)
+{
+  FATFS fs;    // File system variable
+
+  // Mount the file system
+  if (f_mount(LUN_ID_SD_MMC_0_MEM, &fs) != FR_OK)
+    return BS_FALSE;
+
+  return BS_TRUE;
+}
+
+/**
+ * @brief FS write
+ */
+static bool_t m_sys_fs_write(const char *path, char *data)
+{
+  FIL fhandle; // File handle variable
+  static uint32_t pos = 0;
+
+  // Open a file
+  if (f_open(&fhandle, path, FA_OPEN_ALWAYS | FA_WRITE) == FR_OK)
+  {
+    // Seek to write position
+    if (f_tell(&fhandle) != pos)
+      f_lseek(&fhandle, pos);
+
+    // Write data to file
+    if (f_puts(data, &fhandle) == -1)
+      return BS_FALSE;
+
+    // Get the current position
+    pos = f_tell(&fhandle);
+    
+    // Close the file # IMPORTANT
+    f_close(&fhandle);
+  }
+
+  return BS_FALSE;
 }
 
 /* End of file -------------------------------------------------------- */

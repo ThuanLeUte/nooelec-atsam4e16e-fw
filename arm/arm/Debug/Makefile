@@ -101,6 +101,7 @@ SUBDIRS :=  \
 ../src/ASF/thirdparty/fatfs/fatfs-r0.09/doc/img/ \
 ../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/ \
 ../src/ASF/thirdparty/fatfs/fatfs-r0.09/src/option/ \
+../src/ASF/thirdparty/freertos/ \
 ../src/ASF/thirdparty/freertos/freertos-7.3.0/ \
 ../src/ASF/thirdparty/freertos/freertos-7.3.0/source/ \
 ../src/ASF/thirdparty/freertos/freertos-7.3.0/source/include/ \
