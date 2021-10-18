@@ -18,6 +18,7 @@
 #include "bsp/bsp_lcd.h"
 #include "bsp/bsp_io.h"
 #include "bsp/bsp_rtc.h"
+#include "lib/fs.h"
 #include "sys.h"
 #include "sys_damos_ram.h"
 
@@ -38,11 +39,8 @@ static xTaskHandle m_sensor_task_hdl;
 static xTaskHandle m_main_task_hdl;
 
 /* Private function prototypes ---------------------------------------- */
-static void m_sys_sdcard_test(void);
 static void m_sensor_hande_task(void *params);
 static void m_lcd_write_sensor_event(uint8_t sensor_name);
-static bool_t m_sys_fs_init(void);
-static bool_t m_sys_fs_write(const char *path, char *data);
 static void m_sdcard_write_sensor_event(uint8_t sensor_name);
 
 /* Function definitions ----------------------------------------------- */
@@ -55,7 +53,7 @@ void sys_init(void)
   bsp_hw_init();   // Hardware init
   bsp_can_init();  // Can bus init
   bsp_lcd_init();  // LCD init
-  m_sys_fs_init(); // FS init
+  fs_init();       // FS init
 
   // Create task to handle sensor events
   xTaskCreate(m_sensor_hande_task,
@@ -149,86 +147,7 @@ static void m_sdcard_write_sensor_event(uint8_t sensor_name)
 
   sprintf(str, "%s: SS%2d\n", time, sensor_name);
 
-  m_sys_fs_write(SD_PATH, str);
-}
-
-/**
- * @brief SDcard test
- */
-static void m_sys_sdcard_test(void)
-{
-  FATFS fs;    // File system variable
-  FIL fhandle; // File handle variable
-  char buf[25];
-
-  // Test file name (note 0: indicates volume 0)
-  const char test_file_name[] = "0:sam_arm_sd.txt";
-
-  // Mount the file system
-  if (f_mount(LUN_ID_SD_MMC_0_MEM, &fs) != FR_OK)
-    return;
-
-  // Open a file
-  if (f_open(&fhandle, test_file_name, FA_CREATE_ALWAYS | FA_WRITE) == FR_OK)
-  {
-    // File opened successfully, read card capacity
-    uint32_t cap = sd_mmc_get_capacity(0);
-    sprintf(buf, "Capacity: %lu\n", cap);
-
-    // Write capacity to file
-    if (f_puts(buf, &fhandle) != 0)
-      pio_set_pin_high(LED_0_PIN);
-
-    // Close the file #IMPORTANT
-    f_close(&fhandle);
-  }
-
-  // Nothing else to do
-  while (1)
-    ;
-}
-
-/**
- * @brief FS init
- */
-static bool_t m_sys_fs_init(void)
-{
-  FATFS fs;    // File system variable
-
-  // Mount the file system
-  if (f_mount(LUN_ID_SD_MMC_0_MEM, &fs) != FR_OK)
-    return BS_FALSE;
-
-  return BS_TRUE;
-}
-
-/**
- * @brief FS write
- */
-static bool_t m_sys_fs_write(const char *path, char *data)
-{
-  FIL fhandle; // File handle variable
-  static uint32_t pos = 0;
-
-  // Open a file
-  if (f_open(&fhandle, path, FA_OPEN_ALWAYS | FA_WRITE) == FR_OK)
-  {
-    // Seek to write position
-    if (f_tell(&fhandle) != pos)
-      f_lseek(&fhandle, pos);
-
-    // Write data to file
-    if (f_puts(data, &fhandle) == -1)
-      return BS_FALSE;
-
-    // Get the current position
-    pos = f_tell(&fhandle);
-    
-    // Close the file # IMPORTANT
-    f_close(&fhandle);
-  }
-
-  return BS_FALSE;
+  fs_write(SD_PATH, str);
 }
 
 /* End of file -------------------------------------------------------- */

@@ -1,18 +1,18 @@
 /**
- * @file       bsp_rtc.h
+ * @file       fs.h
  * @copyright  Copyright (C) 2020 Hydratech. All rights reserved.
  * @license    This project is released under the Hydratech License.
  * @version    1.0.0
  * @date       2021-01-23
  * @author     Thuan Le
- * @brief      Board Support Package RTC
+ * @brief      File System (FS)
  * @note       None
  * @example    None
  */
 
 /* Define to prevent recursive inclusion ------------------------------ */
-#ifndef __BSP_RTC_H
-#define __BSP_RTC_H
+#ifndef __FS_H
+#define __FS_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,16 +20,15 @@ extern "C" {
 
 /* Includes ----------------------------------------------------------- */
 #include <asf.h>
+#include "bsp/bsp.h"
 
 /* Public defines ----------------------------------------------------- */
 /* Public enumerate/structure ----------------------------------------- */
 /* Public macros ------------------------------------------------------ */
 /* Public variables --------------------------------------------------- */
 /* Public function prototypes ----------------------------------------- */
-/* Public variables --------------------------------------------------- */
-/* Public function prototypes ----------------------------------------- */
 /**
- * @brief         Bsp rtc init
+ * @brief         FS init
  *
  * @param[in]     None
  *
@@ -37,21 +36,24 @@ extern "C" {
  *
  * @return        None
  */
-void bsp_rtc_init(void);
+bool_t fs_init(void);
 
 /**
- * @brief Create string from <dt>
- *        char *out = "YYMMDD:HHMMSS\0"
+ * @brief         Fs write
  *
- * @param[in] dt Time struct handle
- * @param[out] out Time in string (buffer size >= 14)
+ * @param[in]     path    File path
+ * @param[in]     data    Pointer to data
+ *
+ * @attention     None
+ *
+ * @return        None
  */
-void bsp_rtc_make_string_time_style(char *out);
+bool_t fs_write(const char *path, char *data);
 
 /* -------------------------------------------------------------------------- */
 #ifdef __cplusplus
 } // extern "C"
 #endif
-#endif // __BSP_RTC_H
+#endif // __FS_H
 
 /* End of file -------------------------------------------------------- */

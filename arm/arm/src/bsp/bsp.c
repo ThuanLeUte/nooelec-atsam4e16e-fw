@@ -7,7 +7,6 @@
  * @date       2021-01-23
  * @author     Thuan Le
  * @brief      Board Support Package (BSP)
- * 
  * @note       None
  * @example    None
  */

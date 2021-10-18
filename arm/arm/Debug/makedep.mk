@@ -6,6 +6,8 @@ src\ASF\thirdparty\freertos\freertos-7.3.0\source\FreeRTOS_CLI.c
 
 src\bsp\it_callback.c
 
+src\lib\fs.c
+
 src\sys\sys_damos_ram.c
 
 src\ASF\thirdparty\freertos\freertos-7.3.0\source\list.c
