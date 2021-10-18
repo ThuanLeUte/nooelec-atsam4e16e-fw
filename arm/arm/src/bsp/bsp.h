@@ -21,6 +21,7 @@ extern "C" {
 /* Includes ----------------------------------------------------------- */
 #include <stdint.h>
 #include <stdbool.h>
+#include <string.h>
 #include <time.h>
 #include <asf.h>
 #include "bsp_io_10.h"

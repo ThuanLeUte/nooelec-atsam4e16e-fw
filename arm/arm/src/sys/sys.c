@@ -40,8 +40,8 @@ static xTaskHandle m_main_task_hdl;
 
 /* Private function prototypes ---------------------------------------- */
 static void m_sensor_hande_task(void *params);
-static void m_lcd_write_sensor_event(uint8_t sensor_name);
-static void m_sdcard_write_sensor_event(uint8_t sensor_name);
+static void m_lcd_write_sensor_event(date_time_t *dt, uint8_t sensor_name);
+static void m_sdcard_write_sensor_event(date_time_t *dt, uint8_t sensor_name);
 
 /* Function definitions ----------------------------------------------- */
 void sys_init(void)
@@ -76,9 +76,13 @@ void sys_init(void)
 
 void sys_run(void)
 {
+  date_time_t date_time;
+
   while (1)
   {
-    bsp_can_send();
+    bsp_rtc_get_time_struct(&date_time);
+
+    bsp_can_send_sensor_event(&date_time, 1);
 
     vTaskDelay(pdMS_TO_TICKS(100));
   }
@@ -90,14 +94,18 @@ void sys_run(void)
  */
 static void m_sensor_hande_task(void *params)
 {
+  date_time_t dt;
+
   while (1)
   {
     for (uint8_t i = 1; i <= 99; i++)
     {
       if (!ioport_get_pin_level(PIN_INDEX(i)) && !IO_SENSOR_STATE[i])
       {
-        m_lcd_write_sensor_event(i);
-        m_sdcard_write_sensor_event(i);
+        bsp_rtc_get_time_struct(&dt);
+        
+        m_lcd_write_sensor_event(&dt, i);
+        m_sdcard_write_sensor_event(&dt,i);
         IO_SENSOR_STATE[i] = true;
       }
       else if (ioport_get_pin_level(PIN_INDEX(i)) && IO_SENSOR_STATE[i])
@@ -123,12 +131,12 @@ static void m_sensor_hande_task(void *params)
 /**
  * @brief LCD write sensor event
  */
-static void m_lcd_write_sensor_event(uint8_t sensor_name)
+static void m_lcd_write_sensor_event(date_time_t *dt, uint8_t sensor_name)
 {
   static uint8_t m_current_row = 0;
   char time[14];
 
-  bsp_rtc_make_string_time_style(time);
+  bsp_rtc_make_string_time_style(time, dt);
 
   bsp_lcd_write_string(0, m_current_row++, "%s: SS%02d", time, sensor_name);
   if (m_current_row == 4)
@@ -138,12 +146,12 @@ static void m_lcd_write_sensor_event(uint8_t sensor_name)
 /**
  * @brief SDcard write sensor event
  */
-static void m_sdcard_write_sensor_event(uint8_t sensor_name)
+static void m_sdcard_write_sensor_event(date_time_t *dt, uint8_t sensor_name)
 {
   char str[200];
   char time[14];
 
-  bsp_rtc_make_string_time_style(time);
+  bsp_rtc_make_string_time_style(time, dt);
 
   sprintf(str, "%s: SS%2d\n", time, sensor_name);
 

@@ -20,6 +20,7 @@ extern "C" {
 
 /* Includes ----------------------------------------------------------- */
 #include <asf.h>
+#include "bsp.h"
 
 /* Public defines ----------------------------------------------------- */
 /* Public enumerate/structure ----------------------------------------- */
@@ -39,6 +40,8 @@ extern "C" {
  */
 void bsp_rtc_init(void);
 
+void bsp_rtc_get_time_struct(date_time_t *dt);
+
 /**
  * @brief Create string from <dt>
  *        char *out = "YYMMDD:HHMMSS\0"
@@ -46,7 +49,7 @@ void bsp_rtc_init(void);
  * @param[in] dt Time struct handle
  * @param[out] out Time in string (buffer size >= 14)
  */
-void bsp_rtc_make_string_time_style(char *out);
+void bsp_rtc_make_string_time_style(char *out, date_time_t *dt);
 
 /* -------------------------------------------------------------------------- */
 #ifdef __cplusplus
