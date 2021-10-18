@@ -76,13 +76,20 @@ void sys_init(void)
 
 void sys_run(void)
 {
-  date_time_t date_time;
+  date_time_t dt_send;
+  date_time_t dt_get;
+  uint8_t sensor;
 
   while (1)
   {
-    bsp_rtc_get_time_struct(&date_time);
+    bsp_rtc_get_time_struct(&dt_send);
 
-    bsp_can_send_sensor_event(&date_time, 1);
+    bsp_can_send_sensor_event(&dt_send, 1);
+
+    if (bsp_can_is_available())
+    {
+      bsp_can_get_sensor_event(&dt_get, &sensor);
+    }
 
     vTaskDelay(pdMS_TO_TICKS(100));
   }

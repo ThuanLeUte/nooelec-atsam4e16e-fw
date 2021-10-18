@@ -62,7 +62,11 @@ bsp_can_sensor_event_t;
  */
 void bsp_can_init(void);
 
+bool_t bsp_can_is_available(void);
+
 void bsp_can_send_sensor_event(date_time_t *dt, uint8_t sensor_name);
+
+void bsp_can_get_sensor_event(date_time_t *dt, uint8_t *sensor_name);
 
 /* -------------------------------------------------------------------------- */
 #ifdef __cplusplus
