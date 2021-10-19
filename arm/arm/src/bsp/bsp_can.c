@@ -61,7 +61,11 @@ void bsp_can_init(void)
 
 bool_t bsp_can_is_available(void)
 {
-  return (can_mailbox_get_status(CAN1, 0) & CAN_MSR_MRDY);
+  while (!(can_mailbox_get_status(CAN1, 0) & CAN_MSR_MRDY))
+  {
+  }
+
+  return BS_TRUE;
 }
 
 void bsp_can_send_sensor_event(date_time_t *dt, uint8_t sensor_name)
