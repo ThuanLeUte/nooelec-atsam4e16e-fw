@@ -13,6 +13,7 @@
 
 /* Includes ----------------------------------------------------------- */
 #include "bsp_can.h"
+#include "platform.h"
 
 /* Private defines ---------------------------------------------------- */
 /* Private enumerate/structure ---------------------------------------- */
@@ -42,11 +43,19 @@ void bsp_can_init(void)
   can_reset_all_mailbox(CAN1);
 
   m_can1_mailbox.ul_mb_idx   = 0;
-  m_can1_mailbox.uc_obj_type = CAN_MB_TX_MODE;
   m_can1_mailbox.uc_tx_prio  = 15;
   m_can1_mailbox.uc_id_ver   = 0;
-  m_can1_mailbox.ul_id_msk   = 0;
   m_can1_mailbox.uc_length   = 8;
+
+#if (_CONFIG_ELEVATOR_BOARD) // {
+  m_can1_mailbox.uc_obj_type = CAN_MB_TX_MODE;
+  m_can1_mailbox.ul_id_msk   = 0;
+#else // }{
+  m_can1_mailbox.uc_obj_type = CAN_MB_RX_MODE;
+  m_can1_mailbox.ul_id_msk   = CAN_MAM_MIDvA_Msk | CAN_MAM_MIDvB_Msk;
+  m_can1_mailbox.ul_id       = CAN_MID_MIDvA(0x07);
+#endif // }
+
   can_mailbox_init(CAN1, &m_can1_mailbox);
 }
 
@@ -94,7 +103,7 @@ static void m_bsp_can_send_msg(bsp_can_msg_t msg)
   switch (msg)
   {
   case MSG_SENSOR:
-    msg_id = 0x01;
+    msg_id = 0x07;
     m_bsp_can_pack_msg_sensor(m_can_tx_data);
     break;
 

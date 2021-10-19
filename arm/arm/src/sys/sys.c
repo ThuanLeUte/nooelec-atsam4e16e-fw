@@ -21,6 +21,7 @@
 #include "lib/fs.h"
 #include "sys.h"
 #include "sys_damos_ram.h"
+#include "bsp/platform.h"
 
 /* Private defines ---------------------------------------------------- */
 #define SENSOR_TASK_STACK_SIZE       (2048)
@@ -55,6 +56,7 @@ void sys_init(void)
   bsp_lcd_init();  // LCD init
   fs_init();       // FS init
 
+#if (_CONFIG_ELEVATOR_BOARD) // {
   // Create task to handle sensor events
   xTaskCreate(m_sensor_hande_task,
               "SensorHandleTask",
@@ -62,7 +64,7 @@ void sys_init(void)
               NULL,
               SENSOR_TASK_PRIORITY,
               m_sensor_task_hdl);
-
+#else // }{
   // Create task to handle main system
   xTaskCreate(sys_run,
               "SystemRun",
@@ -70,25 +72,24 @@ void sys_init(void)
               NULL,
               MAIN_TASK_PRIORITY,
               m_main_task_hdl);
+#endif // }
 
   vTaskStartScheduler();
 }
 
 void sys_run(void)
 {
-  date_time_t dt_send;
   date_time_t dt_get;
   uint8_t sensor;
 
   while (1)
   {
-    bsp_rtc_get_time_struct(&dt_send);
-
-    bsp_can_send_sensor_event(&dt_send, 1);
 
     if (bsp_can_is_available())
     {
       bsp_can_get_sensor_event(&dt_get, &sensor);
+      m_lcd_write_sensor_event(&dt_get, sensor);
+      m_sdcard_write_sensor_event(&dt_get, sensor);
     }
 
     vTaskDelay(pdMS_TO_TICKS(100));
@@ -110,7 +111,8 @@ static void m_sensor_hande_task(void *params)
       if (!ioport_get_pin_level(PIN_INDEX(i)) && !IO_SENSOR_STATE[i])
       {
         bsp_rtc_get_time_struct(&dt);
-        
+
+        bsp_can_send_sensor_event(&dt, i);
         m_lcd_write_sensor_event(&dt, i);
         m_sdcard_write_sensor_event(&dt,i);
         IO_SENSOR_STATE[i] = true;
