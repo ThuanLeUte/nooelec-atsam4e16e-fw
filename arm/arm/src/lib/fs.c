@@ -35,22 +35,17 @@ bool_t fs_init(void)
 bool_t fs_write(const char *path, char *data)
 {
   FIL fhandle; // File handle variable
-  static uint32_t pos = 0;
 
   // Open a file
   if (f_open(&fhandle, path, FA_OPEN_ALWAYS | FA_WRITE) == FR_OK)
   {
     // Seek to write position
-    if (f_tell(&fhandle) != pos)
-      f_lseek(&fhandle, pos);
+    f_lseek(&fhandle, fhandle.fsize);
 
     // Write data to file
     if (f_puts(data, &fhandle) == -1)
       return BS_FALSE;
 
-    // Get the current position
-    pos = f_tell(&fhandle);
-    
     // Close the file # IMPORTANT
     f_close(&fhandle);
   }
