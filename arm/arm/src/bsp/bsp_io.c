@@ -34,30 +34,12 @@
 /* Function definitions ----------------------------------------------- */
 void bsp_gpio_init(void)
 {
-  for (uint8_t i = 1; i <= 99; i++)
+  for (uint8_t i = 1; i <= SENSOR_COUNT_MAX; i++)
   {
-    ioport_set_pin_input_mode(PIN_INDEX(i), IOPORT_MODE_PULLUP, IOPORT_SENSE_BOTHEDGES);
-
-    // Configure as input with pull-down and denouncing
-    // pio_set_input(PORT(i), PIN(i), PIO_DEFAULT);
-    pio_pull_down(PORT(i), PIN(i), ENABLE);
-
-    // // Configure debounce filter at 25Hz
-    // pio_set_debounce_filter(PORT(i), PIN(i), 1000);
-
-    // // Configure External Interrupt on falling edge
-    // pio_handler_set(PORT(i), PORT_ID(i), PIN(i), PIO_IT_RISE_EDGE, exint_io_handler);
-
-    // // Enable external interrupt
-    // pio_enable_interrupt(PORT(i), PIN(i));
+    ioport_set_pin_dir(PIN_INDEX(i), IOPORT_DIR_INPUT);
+    ioport_set_pin_level(PIN_INDEX(i), IOPORT_PIN_LEVEL_LOW);
+    ioport_set_pin_mode(PIN_INDEX(i), IOPORT_MODE_PULLDOWN);
   }
-
-  // Configure Ext Interrupt in NVIC
-  // irq_register_handler(PIOA_IRQn, 0);
-  // irq_register_handler(PIOB_IRQn, 0);
-  // irq_register_handler(PIOC_IRQn, 0);
-  // irq_register_handler(PIOD_IRQn, 0);
-  // irq_register_handler(PIOE_IRQn, 0);
 }
 
 Pio *bsp_io_get_port_address(const bsp_io_10_t *io)
@@ -78,6 +60,11 @@ uint32_t bsp_io_get_pin(const bsp_io_10_t *io)
 uint32_t bsp_io_get_pin_index(const bsp_io_10_t *io)
 {
   return io->pin_index;
+}
+
+bsp_io_trigger_t bsp_io_get_trigger_edge(const bsp_io_10_t *io)
+{
+  return io->trigger_edge;
 }
 
 /* Private function definitions ---------------------------------------- */

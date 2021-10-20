@@ -126,12 +126,20 @@ extern "C" {
 #define IO_SENSOR_99        PIOC, ID_PIOC, PIO_PC25, PIO_PC25_IDX
 
 /* Public enumerate/structure ----------------------------------------- */
+typedef enum
+{
+   FALLING_EDGE = 0
+  ,RISING_EDGE
+}
+bsp_io_trigger_t;
+
 typedef struct
 {
   Pio *port;
   uint32_t port_id;
   uint32_t pin;
   uint32_t pin_index;
+  bsp_io_trigger_t trigger_edge;
 }
 bsp_io_10_t;
 

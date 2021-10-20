@@ -84,7 +84,6 @@ void sys_run(void)
 
   while (1)
   {
-
     if (bsp_can_is_available())
     {
       bsp_can_get_sensor_event(&dt_get, &sensor);
@@ -103,34 +102,34 @@ void sys_run(void)
 static void m_sensor_hande_task(void *params)
 {
   date_time_t dt;
+  bool now;
+
+  for (uint8_t i = 1; i <= SENSOR_COUNT_MAX; i++)
+  {
+    IO_SENSOR_STATE[i] = ioport_get_pin_level(PIN_INDEX(i));
+  }
 
   while (1)
   {
-    for (uint8_t i = 1; i <= 99; i++)
+    for (uint8_t i = 1; i <= SENSOR_COUNT_MAX; i++)
     {
-      if (!ioport_get_pin_level(PIN_INDEX(i)) && !IO_SENSOR_STATE[i])
-      {
-        bsp_rtc_get_time_struct(&dt);
+      now = ioport_get_pin_level(PIN_INDEX(i));
 
-        bsp_can_send_sensor_event(&dt, i);
-        m_lcd_write_sensor_event(&dt, i);
-        m_sdcard_write_sensor_event(&dt,i);
-        IO_SENSOR_STATE[i] = true;
-      }
-      else if (ioport_get_pin_level(PIN_INDEX(i)) && IO_SENSOR_STATE[i])
+      if (now != IO_SENSOR_STATE[i])
       {
-        IO_SENSOR_STATE[i] = false;
-      }
+        if (now == PIN_TRIGGER_EDGE(i))
+        {
+          bsp_rtc_get_time_struct(&dt);
+          m_lcd_write_sensor_event(&dt, i);
+          m_sdcard_write_sensor_event(&dt, i);
 
-      // if (pio_get(PORT(i), PIO_TYPE_PIO_INPUT, PIN(i)) && !IO_SENSOR_STATE[i])
-      // {
-      //   m_lcd_write_sensor_event(i);
-      //   IO_SENSOR_STATE[i] = true;
-      // }
-      // else if (!pio_get(PORT(i), PIO_TYPE_PIO_INPUT, PIN(i)) && IO_SENSOR_STATE[i])
-      // {
-      //   IO_SENSOR_STATE[i] = false;
-      // }
+#if (_CONFIG_ELEVATOR_BOARD) // {
+          bsp_can_send_sensor_event(&dt, i);
+#endif // }
+        }
+        
+        IO_SENSOR_STATE[i] = now;
+      }
     }
 
     vTaskDelay(pdMS_TO_TICKS(100));
