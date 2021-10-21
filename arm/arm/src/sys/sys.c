@@ -154,9 +154,8 @@ static void m_sensor_detect_task(void *params)
       if (now != IO_SENSOR_STATE[i])
       {
         if (now == PIN_TRIGGER_EDGE(i))
-        { 
-          if (i != 30)
-            xQueueSend(g_sensor_evt_queue, (void *)&i, pdMS_TO_TICKS(100));
+        {
+          xQueueSend(g_sensor_evt_queue, (void *)&i, pdMS_TO_TICKS(100));
         }
 
         IO_SENSOR_STATE[i] = now;
