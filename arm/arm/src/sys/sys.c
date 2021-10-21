@@ -56,7 +56,6 @@ void sys_init(void)
   bsp_lcd_init();  // LCD init
   fs_init();       // FS init
 
-#if (_CONFIG_ELEVATOR_BOARD) // {
   // Create task to handle sensor events
   xTaskCreate(m_sensor_hande_task,
               "SensorHandleTask",
@@ -64,6 +63,8 @@ void sys_init(void)
               NULL,
               SENSOR_TASK_PRIORITY,
               m_sensor_task_hdl);
+
+#if (_CONFIG_ELEVATOR_BOARD) // {
 #else // }{
   // Create task to handle main system
   xTaskCreate(sys_run,
