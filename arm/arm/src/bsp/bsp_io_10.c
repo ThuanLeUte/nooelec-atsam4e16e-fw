@@ -17,7 +17,7 @@
 /* Private enumerate/structure ---------------------------------------- */
 /* Private macros ----------------------------------------------------- */
 /* Public variables --------------------------------------------------- */
-bool IO_SENSOR_STATE[100] = { 0 };
+volatile bool IO_SENSOR_STATE[100] = { 0 };
 
 const bsp_io_10_t IO_SENSOR[] = {
      { IO_SENSOR_0 , FALLING_EDGE }

@@ -43,11 +43,30 @@ extern "C" {
 /* Public function prototypes ----------------------------------------- */
 /* Public variables --------------------------------------------------- */
 /* Public function prototypes ----------------------------------------- */
-Pio *bsp_io_get_port_address(const bsp_io_10_t *io);
-uint32_t bsp_io_get_port_id(const bsp_io_10_t *io);
-uint32_t bsp_io_get_pin(const bsp_io_10_t *io);
-uint32_t bsp_io_get_pin_index(const bsp_io_10_t *io);
-bsp_io_trigger_t bsp_io_get_trigger_edge(const bsp_io_10_t *io);
+static inline Pio *bsp_io_get_port_address(const bsp_io_10_t *io)
+{
+  return io->port;
+}
+
+static inline uint32_t bsp_io_get_port_id(const bsp_io_10_t *io)
+{
+  return io->port_id;
+}
+
+static inline uint32_t bsp_io_get_pin(const bsp_io_10_t *io)
+{
+  return io->pin;
+}
+
+static inline uint32_t bsp_io_get_pin_index(const bsp_io_10_t *io)
+{
+  return io->pin_index;
+}
+
+static inline bsp_io_trigger_t bsp_io_get_trigger_edge(const bsp_io_10_t *io)
+{
+  return io->trigger_edge;
+}
 
 void bsp_gpio_init(void);
 

@@ -85,7 +85,7 @@ extern "C" {
 #define IO_SENSOR_58        PIOD, ID_PIOD, PIO_PD28, PIO_PD28_IDX
 #define IO_SENSOR_59        PIOC, ID_PIOC, PIO_PC28, PIO_PC28_IDX
 #define IO_SENSOR_60        PIOB, ID_PIOB, PIO_PB6,  PIO_PB6_IDX
-#define IO_SENSOR_61        PIOA, ID_PIOA, PIO_PA6,  PIO_PA6_IDX
+#define IO_SENSOR_61        PIOA, ID_PIOA, PIO_PA5,  PIO_PA5_IDX
 #define IO_SENSOR_62        PIOD, ID_PIOD, PIO_PD17, PIO_PD17_IDX
 #define IO_SENSOR_63        PIOD, ID_PIOD, PIO_PD16, PIO_PD16_IDX
 #define IO_SENSOR_64        PIOC, ID_PIOC, PIO_PC8,  PIO_PC8_IDX
@@ -146,7 +146,7 @@ bsp_io_10_t;
 /* Public macros ------------------------------------------------------ */
 /* Public variables --------------------------------------------------- */
 extern const bsp_io_10_t IO_SENSOR[];
-extern bool IO_SENSOR_STATE[];
+extern volatile bool IO_SENSOR_STATE[];
 
 /* Public function prototypes ----------------------------------------- */
 /* -------------------------------------------------------------------- */

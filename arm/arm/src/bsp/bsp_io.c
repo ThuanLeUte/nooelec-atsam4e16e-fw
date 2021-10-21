@@ -42,30 +42,5 @@ void bsp_gpio_init(void)
   }
 }
 
-Pio *bsp_io_get_port_address(const bsp_io_10_t *io)
-{
-  return io->port;
-}
-
-uint32_t bsp_io_get_port_id(const bsp_io_10_t *io)
-{
-  return io->port_id;
-}
-
-uint32_t bsp_io_get_pin(const bsp_io_10_t *io)
-{
-  return io->pin;
-}
-
-uint32_t bsp_io_get_pin_index(const bsp_io_10_t *io)
-{
-  return io->pin_index;
-}
-
-bsp_io_trigger_t bsp_io_get_trigger_edge(const bsp_io_10_t *io)
-{
-  return io->trigger_edge;
-}
-
 /* Private function definitions ---------------------------------------- */
 /* End of file -------------------------------------------------------- */
