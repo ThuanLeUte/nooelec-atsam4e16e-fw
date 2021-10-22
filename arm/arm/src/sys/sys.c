@@ -24,10 +24,10 @@
 #include "bsp/platform.h"
 
 /* Private defines ---------------------------------------------------- */
-#define SENSOR_TASK_STACK_SIZE       (2048 * 2)
+#define SENSOR_TASK_STACK_SIZE       (2048)
 #define SENSOR_TASK_PRIORITY         (3)
 
-#define MAIN_TASK_STACK_SIZE         (2048 * 2)
+#define MAIN_TASK_STACK_SIZE         (2048)
 #define MAIN_TASK_PRIORITY           (3)
 
 #define SD_PATH                      "0:sensor_events.log"

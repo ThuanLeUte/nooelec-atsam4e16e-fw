@@ -797,9 +797,6 @@
     <Compile Include="src\lib\fs.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\platform.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\sys\sys_damos_ram.c">
       <SubType>compile</SubType>
     </Compile>
