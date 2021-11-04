@@ -30,19 +30,13 @@ extern "C" {
  */
 typedef struct 
 {
-  uint8_t  device_address;  // I2C device address
-
-  // Read n-bytes from device's internal address <reg_addr> via I2C bus
-  int (*i2c_read) (uint8_t slave_addr, uint8_t reg_addr, uint8_t *data, uint32_t len);
+  uint8_t device_address; // I2C device address
 
   // Write n-bytes from device's internal address <reg_addr> via I2C bus
   int (*i2c_write) (uint8_t slave_addr, uint8_t reg_addr, uint8_t *data, uint32_t len);
 
   // Delay ms
-  void (*delay_ms) (uint32_t ms);
-
-  // Gpio set
-  void (*gpio_write) (uint8_t pin, uint8_t state);
+  void (*delay) (uint32_t ms);
 }
 ssd1311_t;
 
@@ -104,6 +98,9 @@ base_status_t ssd1311_write_data_byte(ssd1311_t *me, uint8_t data);
  * - BS_ERROR
  */
 base_status_t ssd1311_write_data(ssd1311_t *me, uint8_t *data, uint16_t len);
+
+void ssd1311_send_string(ssd1311_t *me, const char *string, uint8_t col, uint8_t row);
+
 
 /* -------------------------------------------------------------------------- */
 #ifdef __cplusplus

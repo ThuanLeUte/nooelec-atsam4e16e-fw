@@ -19,7 +19,7 @@ extern "C" {
 #endif
 
 /* Includes ----------------------------------------------------------- */
-#include "ssd1311.h"
+#include "components/ssd1311.h"
 
 /* Public defines ----------------------------------------------------- */
 /* Public enumerate/structure ----------------------------------------- */
@@ -37,16 +37,17 @@ extern "C" {
  */
 void bsp_lcd_init(void);
 
-/* Public function for project ---------------------------------------- */
 /**
- * @brief         LDC display image
+ * @brief         LCD write string
  *
- * @param[in]     item    Image item
+ * @param[in]     None
  *
  * @attention     None
  *
  * @return        None
  */
+void bsp_lcd_write_string(uint8_t x, uint8_t y, const char *fmt_string, ...);
+
 /* -------------------------------------------------------------------- */
 #ifdef __cplusplus
 } // extern "C"

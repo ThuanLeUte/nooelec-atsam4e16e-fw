@@ -1,5 +1,11 @@
 {
     "files.associations": {
-        "ssd1311.h": "c"
+        "ssd1311.h": "c",
+        "bsp_lcd.h": "c",
+        "bsp_io.h": "c",
+        "sys.h": "c",
+        "sys_damos_ram.h": "c",
+        "bsp_can.h": "c",
+        "platform.h": "c"
     }
 }

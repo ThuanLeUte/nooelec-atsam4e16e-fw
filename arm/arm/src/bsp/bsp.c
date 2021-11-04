@@ -7,13 +7,14 @@
  * @date       2021-01-23
  * @author     Thuan Le
  * @brief      Board Support Package (BSP)
- * 
  * @note       None
  * @example    None
  */
 
 /* Includes ----------------------------------------------------------- */
 #include "bsp.h"
+#include "bsp_io.h"
+#include "bsp_rtc.h"
 
 /* Private defines ---------------------------------------------------- */
 /* Private enumerate/structure ---------------------------------------- */
@@ -22,15 +23,19 @@
 /* Private variables -------------------------------------------------- */
 /* Private function prototypes ---------------------------------------- */
 static void m_bsp_i2c_init(void);
-static void m_bsp_gpio_init(void);
 static void m_bsp_sdcard_init(void);
 
 /* Function definitions ----------------------------------------------- */
 void bsp_hw_init(void)
 {
   m_bsp_i2c_init();
-  m_bsp_gpio_init();
+  bsp_rtc_init();
+
+#if (!_CONFIG_ELEVATOR_BOARD) // {
   m_bsp_sdcard_init();
+#endif // }
+
+  bsp_gpio_init();
 }
 
 int bsp_i2c_write(uint8_t slave_addr, uint8_t reg_addr, uint8_t *p_data, uint32_t len)
@@ -46,6 +51,11 @@ int bsp_i2c_write(uint8_t slave_addr, uint8_t reg_addr, uint8_t *p_data, uint32_
   return twi_master_write(TWI0, &packet_write);
 }
 
+void bsp_delay(uint32_t ms)
+{
+  delay_ms(ms);
+}
+
 /* Private function definitions ---------------------------------------- */
 /**
  * @brief I2C init
@@ -53,22 +63,14 @@ int bsp_i2c_write(uint8_t slave_addr, uint8_t reg_addr, uint8_t *p_data, uint32_
 static void m_bsp_i2c_init(void)
 {
   twi_master_options_t opt = {
-      .speed = 400000
+      .speed = 100000
   };
 
   twi_master_setup(TWI0, &opt);
 }
 
 /**
- * @brief Gpio init
- */
-static void m_bsp_gpio_init(void)
-{
-
-}
-
-/**
- * @brief Gpio init
+ * @brief Sdcard init
  */
 static void m_bsp_sdcard_init(void)
 {
