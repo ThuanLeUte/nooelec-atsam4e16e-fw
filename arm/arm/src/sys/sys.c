@@ -98,8 +98,12 @@ void sys_run(void)
     if (bsp_can_is_available())
     {
       bsp_can_get_sensor_event(&dt_get, &sensor);
-      m_lcd_write_sensor_event(&dt_get, sensor);
-      m_sdcard_write_sensor_event(&dt_get, sensor);
+
+      if (sensor != 0)
+      {
+        m_lcd_write_sensor_event(&dt_get, sensor);
+        m_sdcard_write_sensor_event(&dt_get, sensor);
+      }
     }
 
     vTaskDelay(pdMS_TO_TICKS(100));
