@@ -56,7 +56,18 @@ void sys_init(void)
   bsp_hw_init();   // Hardware init
   bsp_can_init();  // Can bus init
   bsp_lcd_init();  // LCD init
+
+#if (!_CONFIG_ELEVATOR_BOARD) // {
   fs_init();       // FS init
+
+  // Create task to handle main system
+  xTaskCreate(sys_run,
+              "SystemRun",
+              MAIN_TASK_STACK_SIZE,
+              NULL,
+              MAIN_TASK_PRIORITY,
+              m_main_task_hdl);
+#endif // }
 
   // Create task to detect sensor events
   xTaskCreate(m_sensor_detect_task,
@@ -73,17 +84,6 @@ void sys_init(void)
               NULL,
               SENSOR_TASK_PRIORITY,
               m_sensor_handle_task_hdl);
-
-#if (_CONFIG_ELEVATOR_BOARD) // {
-#else // }{
-  // Create task to handle main system
-  xTaskCreate(sys_run,
-              "SystemRun",
-              MAIN_TASK_STACK_SIZE,
-              NULL,
-              MAIN_TASK_PRIORITY,
-              m_main_task_hdl);
-#endif // }
 
   vTaskStartScheduler();
 }
@@ -121,10 +121,11 @@ static void m_sensor_handle_task(void *params)
     {
       bsp_rtc_get_time_struct(&dt);
       m_lcd_write_sensor_event(&dt, sensor_event);
-      m_sdcard_write_sensor_event(&dt, sensor_event);
 
 #if (_CONFIG_ELEVATOR_BOARD) // {
       bsp_can_send_sensor_event(&dt, sensor_event);
+#else // }{
+      m_sdcard_write_sensor_event(&dt, sensor_event);
 #endif // }
     }
 

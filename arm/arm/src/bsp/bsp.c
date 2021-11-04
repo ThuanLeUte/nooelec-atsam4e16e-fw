@@ -30,7 +30,11 @@ void bsp_hw_init(void)
 {
   m_bsp_i2c_init();
   bsp_rtc_init();
+
+#if (!_CONFIG_ELEVATOR_BOARD) // {
   m_bsp_sdcard_init();
+#endif // }
+
   bsp_gpio_init();
 }
 
