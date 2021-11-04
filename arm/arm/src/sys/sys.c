@@ -176,7 +176,12 @@ static void m_lcd_write_sensor_event(date_time_t *dt, uint8_t sensor_name)
 
   bsp_rtc_make_string_time_style(time, dt);
 
-  bsp_lcd_write_string(0, m_current_row++, "%s: SS%02d", time, sensor_name);
+#if (_CONFIG_ELEVATOR_BOARD) // {
+  bsp_lcd_write_string(0, m_current_row++, "%s: CS%02d", time, sensor_name);
+#else // }{
+  bsp_lcd_write_string(0, m_current_row++, "%s: CR%02d", time, sensor_name);
+#endif // }
+
   if (m_current_row == 4)
     m_current_row = 0;
 }
@@ -191,7 +196,11 @@ static void m_sdcard_write_sensor_event(date_time_t *dt, uint8_t sensor_name)
 
   bsp_rtc_make_string_time_style(time, dt);
 
-  sprintf(str, "%s: SS%2d\n", time, sensor_name);
+#if (_CONFIG_ELEVATOR_BOARD) // {
+  sprintf(str, "%s: CS%2d\n", time, sensor_name);
+#else // }{
+  sprintf(str, "%s: CR%2d\n", time, sensor_name);
+#endif // }
 
   fs_write(SD_PATH, str);
 }
