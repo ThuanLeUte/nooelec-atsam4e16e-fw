@@ -33,6 +33,13 @@
 #define SD_PATH                      "0:sensor_events.log"
 
 /* Private enumerate/structure ---------------------------------------- */
+typedef enum
+{
+   CAR_STATION
+  ,CONTROL_ROOM
+}
+sys_evt_src_t;
+
 /* Private macros ----------------------------------------------------- */
 /* Public variables --------------------------------------------------- */
 /* Private variables -------------------------------------------------- */
@@ -43,8 +50,8 @@ static xTaskHandle m_main_task_hdl;
 /* Private function prototypes ---------------------------------------- */
 static void m_sensor_detect_task(void *params);
 static void m_sensor_handle_task(void *params);
-static void m_lcd_write_sensor_event(date_time_t *dt, uint8_t sensor_name);
-static void m_sdcard_write_sensor_event(date_time_t *dt, uint8_t sensor_name);
+static void m_lcd_write_sensor_event(date_time_t *dt, uint8_t sensor_name, sys_evt_src_t evt_src);
+static void m_sdcard_write_sensor_event(date_time_t *dt, uint8_t sensor_name, sys_evt_src_t evt_src);
 
 /* Function definitions ----------------------------------------------- */
 void sys_init(void)
@@ -57,7 +64,8 @@ void sys_init(void)
   bsp_can_init();  // Can bus init
   bsp_lcd_init();  // LCD init
 
-#if (!_CONFIG_ELEVATOR_BOARD) // {
+#if (_CONFIG_ELEVATOR_BOARD) // {
+#else // }{
   fs_init();       // FS init
 
   // Create task to handle main system
@@ -101,8 +109,8 @@ void sys_run(void)
 
       if (sensor != 0)
       {
-        m_lcd_write_sensor_event(&dt_get, sensor);
-        m_sdcard_write_sensor_event(&dt_get, sensor);
+        m_lcd_write_sensor_event(&dt_get, sensor, CAR_STATION);
+        m_sdcard_write_sensor_event(&dt_get, sensor, CAR_STATION);
       }
     }
 
@@ -121,19 +129,18 @@ static void m_sensor_handle_task(void *params)
 
   while (1)
   {
-    if (xQueueReceive(g_sensor_evt_queue, &sensor_event, pdMS_TO_TICKS(100)) == pdTRUE)
+    if (xQueueReceive(g_sensor_evt_queue, &sensor_event, portMAX_DELAY) == pdTRUE)
     {
       bsp_rtc_get_time_struct(&dt);
-      m_lcd_write_sensor_event(&dt, sensor_event);
 
 #if (_CONFIG_ELEVATOR_BOARD) // {
+      m_lcd_write_sensor_event(&dt, sensor_event, CAR_STATION);
       bsp_can_send_sensor_event(&dt, sensor_event);
 #else // }{
-      m_sdcard_write_sensor_event(&dt, sensor_event);
+      m_lcd_write_sensor_event(&dt, sensor_event, CONTROL_ROOM);
+      m_sdcard_write_sensor_event(&dt, sensor_event, CONTROL_ROOM);
 #endif // }
     }
-
-    vTaskDelay(pdMS_TO_TICKS(100));
   }
 }
 
@@ -174,18 +181,17 @@ static void m_sensor_detect_task(void *params)
 /**
  * @brief LCD write sensor event
  */
-static void m_lcd_write_sensor_event(date_time_t *dt, uint8_t sensor_name)
+static void m_lcd_write_sensor_event(date_time_t *dt, uint8_t sensor_name, sys_evt_src_t evt_src)
 {
   static uint8_t m_current_row = 0;
   char time[14];
 
   bsp_rtc_make_string_time_style(time, dt);
 
-#if (_CONFIG_ELEVATOR_BOARD) // {
-  bsp_lcd_write_string(0, m_current_row++, "%s: CS%02d", time, sensor_name);
-#else // }{
-  bsp_lcd_write_string(0, m_current_row++, "%s: CR%02d", time, sensor_name);
-#endif // }
+  if (evt_src == CAR_STATION)
+    bsp_lcd_write_string(0, m_current_row++, "%s: CS%02d", time, sensor_name);
+  else
+    bsp_lcd_write_string(0, m_current_row++, "%s: CR%02d", time, sensor_name);
 
   if (m_current_row == 4)
     m_current_row = 0;
@@ -194,18 +200,17 @@ static void m_lcd_write_sensor_event(date_time_t *dt, uint8_t sensor_name)
 /**
  * @brief SDcard write sensor event
  */
-static void m_sdcard_write_sensor_event(date_time_t *dt, uint8_t sensor_name)
+static void m_sdcard_write_sensor_event(date_time_t *dt, uint8_t sensor_name, sys_evt_src_t evt_src)
 {
   char str[200];
   char time[14];
 
   bsp_rtc_make_string_time_style(time, dt);
 
-#if (_CONFIG_ELEVATOR_BOARD) // {
-  sprintf(str, "%s: CS%2d\n", time, sensor_name);
-#else // }{
-  sprintf(str, "%s: CR%2d\n", time, sensor_name);
-#endif // }
+  if (evt_src == CAR_STATION)
+    sprintf(str, "%s: CS%2d\n", time, sensor_name);
+  else
+    sprintf(str, "%s: CR%2d\n", time, sensor_name);
 
   fs_write(SD_PATH, str);
 }

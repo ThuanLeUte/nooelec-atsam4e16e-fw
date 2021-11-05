@@ -15,6 +15,7 @@
 #include "bsp.h"
 #include "bsp_io.h"
 #include "bsp_rtc.h"
+#include "platform.h"
 
 /* Private defines ---------------------------------------------------- */
 /* Private enumerate/structure ---------------------------------------- */
@@ -31,7 +32,8 @@ void bsp_hw_init(void)
   m_bsp_i2c_init();
   bsp_rtc_init();
 
-#if (!_CONFIG_ELEVATOR_BOARD) // {
+#if (_CONFIG_ELEVATOR_BOARD) // {
+#else // }{
   m_bsp_sdcard_init();
 #endif // }
 
