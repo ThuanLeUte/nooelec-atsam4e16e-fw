@@ -19,6 +19,8 @@
 /* Private enumerate/structure ---------------------------------------- */
 /* Private macros ----------------------------------------------------- */
 /* Public variables --------------------------------------------------- */
+volatile uint32_t g_ul_recv_status = 0;
+
 /* Private variables -------------------------------------------------- */
 static can_mb_conf_t m_can1_mailbox;
 static bsp_can_sensor_event_t m_sensor_event;
@@ -33,6 +35,18 @@ static void m_bsp_can_pack_msg_sensor(uint8_t *can_data);
 static void m_bsp_can_unpack_msg_sensor(uint8_t *can_data);
 
 /* Function definitions ----------------------------------------------- */
+void CAN1_Handler(void)
+{
+  uint32_t ul_status;
+  ul_status = can_mailbox_get_status(CAN1, 0);
+  if ((ul_status & CAN_MSR_MRDY) == CAN_MSR_MRDY)
+  {
+    m_can1_mailbox.ul_mb_idx = 0;
+    m_can1_mailbox.ul_status = ul_status;
+    g_ul_recv_status = 1;
+  }
+}
+
 void bsp_can_init(void)
 {
   uint32_t ul_sysclk = sysclk_get_cpu_hz();
@@ -48,23 +62,29 @@ void bsp_can_init(void)
   m_can1_mailbox.uc_length   = 8;
 
 #if (_CONFIG_ELEVATOR_BOARD) // {
-  m_can1_mailbox.uc_obj_type = CAN_MB_TX_MODE;
+  m_can1_mailbox.uc_obj_type = CAN_MB_PRODUCER_MODE;
   m_can1_mailbox.ul_id_msk   = 0;
+  can_mailbox_init(CAN1, &m_can1_mailbox);
 #else // }{
-  m_can1_mailbox.uc_obj_type = CAN_MB_RX_MODE;
+  m_can1_mailbox.uc_obj_type = CAN_MB_CONSUMER_MODE;
   m_can1_mailbox.ul_id_msk   = CAN_MAM_MIDvA_Msk | CAN_MAM_MIDvB_Msk;
   m_can1_mailbox.ul_id       = CAN_MID_MIDvA(0x07);
-#endif // }
 
   can_mailbox_init(CAN1, &m_can1_mailbox);
+
+  can_enable_interrupt(CAN1, CAN_IER_MB0);
+  NVIC_EnableIRQ(CAN1_IRQn);
+#endif // }
 }
 
 bool_t bsp_can_is_available(void)
 {
-  while (!(can_mailbox_get_status(CAN1, 0) & CAN_MSR_MRDY))
+  while (!g_ul_recv_status)
   {
   }
 
+  g_ul_recv_status = 0;
+  
   return BS_TRUE;
 }
 
