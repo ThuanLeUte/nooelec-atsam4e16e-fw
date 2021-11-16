@@ -85,13 +85,13 @@ void sys_init(void)
               SENSOR_TASK_PRIORITY,
               m_sensor_detect_task_hdl);
 
-  // Create task to handle sensor events
-  xTaskCreate(m_sensor_handle_task,
-              "SensorHandleTask",
-              SENSOR_TASK_STACK_SIZE,
-              NULL,
-              SENSOR_TASK_PRIORITY,
-              m_sensor_handle_task_hdl);
+  // // Create task to handle sensor events
+  // xTaskCreate(m_sensor_handle_task,
+  //             "SensorHandleTask",
+  //             SENSOR_TASK_STACK_SIZE,
+  //             NULL,
+  //             SENSOR_TASK_PRIORITY,
+  //             m_sensor_handle_task_hdl);
 
   vTaskStartScheduler();
 }
@@ -151,6 +151,7 @@ static void m_sensor_detect_task(void *params)
 {
   static bool now;
   static uint32_t i;
+  static date_time_t dt;
 
   for (i = 1; i <= SENSOR_COUNT_MAX; i++)
   {
@@ -167,7 +168,16 @@ static void m_sensor_detect_task(void *params)
       {
         if (now == PIN_TRIGGER_EDGE(i))
         {
-          xQueueSend(g_sensor_evt_queue, (void *)&i, pdMS_TO_TICKS(100));
+          // xQueueSend(g_sensor_evt_queue, (void *)&i, pdMS_TO_TICKS(100));
+          bsp_rtc_get_time_struct(&dt);
+
+#if (_CONFIG_ELEVATOR_BOARD) // {
+          m_lcd_write_sensor_event(&dt, i, CAR_STATION);
+          bsp_can_send_sensor_event(&dt, i);
+#else  // }{
+          m_lcd_write_sensor_event(&dt, i, CONTROL_ROOM);
+          m_sdcard_write_sensor_event(&dt, i, CONTROL_ROOM);
+#endif // }
         }
 
         IO_SENSOR_STATE[i] = now;
