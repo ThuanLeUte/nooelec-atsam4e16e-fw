@@ -41,6 +41,8 @@ void sys_run(void)
 {
   bsp_can_send();
   bsp_lcd_init();
+
+  bsp_delay(2000);
 }
 
 /* Private function definitions --------------------------------------- */
