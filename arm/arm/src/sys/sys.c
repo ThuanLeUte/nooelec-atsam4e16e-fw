@@ -137,8 +137,11 @@ static void m_sensor_handle_task(void *params)
       m_lcd_write_sensor_event(&dt, sensor_event, CAR_STATION);
       bsp_can_send_sensor_event(&dt, sensor_event);
 #else // }{
-      m_lcd_write_sensor_event(&dt, sensor_event, CONTROL_ROOM);
-      m_sdcard_write_sensor_event(&dt, sensor_event, CONTROL_ROOM);
+      if (sensor_event != 3 && sensor_event != 57)
+      {
+        m_lcd_write_sensor_event(&dt, sensor_event, CONTROL_ROOM);
+        m_sdcard_write_sensor_event(&dt, sensor_event, CONTROL_ROOM);
+      }
 #endif // }
     }
   }
