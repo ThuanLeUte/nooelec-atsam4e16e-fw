@@ -18,18 +18,35 @@
 #include "platform.h"
 
 /* Private defines ---------------------------------------------------- */
+#define UART_SERIAL_BAUDRATE              9600
+#define UART_SERIAL_MODE                  UART_MR_PAR_NO
+
+/* =============== UART0 =============== */ 
+#define PINS_UART0          (PIO_PA9A_URXD0 | PIO_PA10A_UTXD0)
+#define PINS_UART0_FLAGS    (PIO_PERIPH_A | PIO_DEFAULT)
+#define PINS_UART0_MASK     (PIO_PA9A_URXD0 | PIO_PA9A_URXD0)
+#define PINS_UART0_PIO      PIOA
+#define PINS_UART0_ID       ID_PIOA
+#define PINS_UART0_TYPE     PIO_PERIPH_A
+#define PINS_UART0_ATTR     PIO_DEFAULT
+
 /* Private enumerate/structure ---------------------------------------- */
 /* Private macros ----------------------------------------------------- */
 /* Public variables --------------------------------------------------- */
 /* Private variables -------------------------------------------------- */
+static uint8_t m_read_buffer[500];
+static uint16_t m_read_buffer_index = 0;
+
 /* Private function prototypes ---------------------------------------- */
 static void m_bsp_i2c_init(void);
+static void m_bsp_uart_init(void);
 static void m_bsp_sdcard_init(void);
 
 /* Function definitions ----------------------------------------------- */
 void bsp_hw_init(void)
 {
   m_bsp_i2c_init();
+  m_bsp_uart_init();
   bsp_rtc_init();
 
 #if (_CONFIG_ELEVATOR_BOARD) // {
@@ -58,6 +75,19 @@ void bsp_delay(uint32_t ms)
   delay_ms(ms);
 }
 
+void UART0_Handler()
+{
+  uint32_t dw_status = uart_get_status(UART0);
+
+  if (dw_status & UART_SR_RXRDY)
+  {
+    uint8_t received_byte;
+    uart_read(UART0, &received_byte);
+    m_read_buffer[m_read_buffer_index] = received_byte;
+    m_read_buffer_index++;
+  }
+}
+
 /* Private function definitions ---------------------------------------- */
 /**
  * @brief I2C init
@@ -69,6 +99,27 @@ static void m_bsp_i2c_init(void)
   };
 
   twi_master_setup(TWI0, &opt);
+}
+
+/**
+ * @brief Uart init
+ */
+static void m_bsp_uart_init(void)
+{
+  const sam_uart_opt_t uart_settings = { sysclk_get_cpu_hz(), UART_SERIAL_BAUDRATE, UART_SERIAL_MODE };
+
+  // Set the pins to use the uart peripheral
+  pio_configure(PINS_UART0_PIO, PINS_UART0_TYPE, PINS_UART0_MASK, PINS_UART0_ATTR);
+
+  // Enable the uart peripheral clock
+  pmc_enable_periph_clk(ID_UART0);
+
+  // Init UART0 and enable Rx and Tx
+  uart_init(UART0, &uart_settings);
+
+  // Interrupt reading ready
+  uart_enable_interrupt(UART0, UART_IER_RXRDY);
+  NVIC_EnableIRQ(UART0_IRQn);
 }
 
 /**
