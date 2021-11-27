@@ -12,7 +12,7 @@
 
 /* Includes ----------------------------------------------------------- */
 /* Private defines ---------------------------------------------------- */
-#define _CONFIG_ELEVATOR_BOARD    (0)
+#define _CONFIG_ELEVATOR_BOARD    (1)
 
 /* Private enumerate/structure ---------------------------------------- */
 /* Private macros ----------------------------------------------------- */

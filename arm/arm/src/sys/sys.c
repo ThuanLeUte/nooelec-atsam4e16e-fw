@@ -64,6 +64,13 @@ void sys_init(void)
   bsp_can_init();  // Can bus init
   bsp_lcd_init();  // LCD init
 
+  while (1)
+  {
+    bsp_delay(1000);
+    bsp_uart_write('1');
+  }
+  
+
 #if (_CONFIG_ELEVATOR_BOARD) // {
 #else // }{
   fs_init();       // FS init

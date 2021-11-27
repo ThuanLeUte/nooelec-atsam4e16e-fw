@@ -91,10 +91,23 @@ void bsp_hw_init(void);
  * @attention     None
  *
  * @return
- * - 0      Succes
+ * - 0      Success
  * - 1      Error
  */
 int bsp_i2c_write(uint8_t slave_addr, uint8_t reg_addr, uint8_t *p_data, uint32_t len);
+
+/**
+ * @brief         UART write
+ *
+ * @param[in]     p_data        Pointer to handle of data
+ *
+ * @attention     None
+ *
+ * @return
+ * - 0      Success
+ * - 1      Error
+ */
+uint32_t bsp_uart_write(uint8_t p_data);
 
 /**
  * @brief BSP delay

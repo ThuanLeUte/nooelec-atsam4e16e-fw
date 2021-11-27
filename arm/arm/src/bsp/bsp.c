@@ -21,15 +21,6 @@
 #define UART_SERIAL_BAUDRATE              9600
 #define UART_SERIAL_MODE                  UART_MR_PAR_NO
 
-/* =============== UART0 =============== */ 
-#define PINS_UART0          (PIO_PA9A_URXD0 | PIO_PA10A_UTXD0)
-#define PINS_UART0_FLAGS    (PIO_PERIPH_A | PIO_DEFAULT)
-#define PINS_UART0_MASK     (PIO_PA9A_URXD0 | PIO_PA9A_URXD0)
-#define PINS_UART0_PIO      PIOA
-#define PINS_UART0_ID       ID_PIOA
-#define PINS_UART0_TYPE     PIO_PERIPH_A
-#define PINS_UART0_ATTR     PIO_DEFAULT
-
 /* Private enumerate/structure ---------------------------------------- */
 /* Private macros ----------------------------------------------------- */
 /* Public variables --------------------------------------------------- */
@@ -70,6 +61,11 @@ int bsp_i2c_write(uint8_t slave_addr, uint8_t reg_addr, uint8_t *p_data, uint32_
   return twi_master_write(TWI0, &packet_write);
 }
 
+uint32_t bsp_uart_write(uint8_t p_data)
+{
+  return uart_write(UART0, p_data);
+}
+
 void bsp_delay(uint32_t ms)
 {
   delay_ms(ms);
@@ -108,11 +104,11 @@ static void m_bsp_uart_init(void)
 {
   const sam_uart_opt_t uart_settings = { sysclk_get_cpu_hz(), UART_SERIAL_BAUDRATE, UART_SERIAL_MODE };
 
-  // Set the pins to use the uart peripheral
-  pio_configure(PINS_UART0_PIO, PINS_UART0_TYPE, PINS_UART0_MASK, PINS_UART0_ATTR);
-
   // Enable the uart peripheral clock
-  pmc_enable_periph_clk(ID_UART0);
+  sysclk_enable_peripheral_clock(ID_UART0);
+
+  // Set the pins to use the uart peripheral
+  pio_set_peripheral(PIOA, PIO_TYPE_PIO_PERIPH_A, PINS_UART0);
 
   // Init UART0 and enable Rx and Tx
   uart_init(UART0, &uart_settings);
