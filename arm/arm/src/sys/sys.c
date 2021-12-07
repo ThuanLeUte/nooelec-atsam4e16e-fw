@@ -67,7 +67,11 @@ void sys_init(void)
   while (1)
   {
     bsp_delay(1000);
-    bsp_uart_write('1');
+    bsp_uart_write('+');
+    bsp_delay(1);
+    bsp_uart_write('+');
+    bsp_delay(1);
+    bsp_uart_write('+');
   }
   
 

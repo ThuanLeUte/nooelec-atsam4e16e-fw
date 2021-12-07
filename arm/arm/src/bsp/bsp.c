@@ -81,6 +81,8 @@ void UART0_Handler()
     uart_read(UART0, &received_byte);
     m_read_buffer[m_read_buffer_index] = received_byte;
     m_read_buffer_index++;
+    if (m_read_buffer_index == 10)
+      m_read_buffer_index = 0;
   }
 }
 
